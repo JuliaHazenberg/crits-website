@@ -1,0 +1,36 @@
+name: Generate Courses
+
+on:
+  push:
+    paths:
+      - 'gpx_files/**'
+      - 'templates/**'
+      - 'generate_courses.py'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies if requirements.txt exists
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run generate_courses.py
+        run: python generate_courses.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add courses/ index.html
+          git commit -m "Auto-generate courses and index.html" || echo "No changes to commit"
+          git push
