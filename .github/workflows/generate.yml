@@ -30,9 +30,11 @@ jobs:
         run: python generate_courses.py
 
       - name: Commit and push generated files
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add courses/ index.html
           git commit -m "Auto-generated courses and index" || echo "No changes to commit"
-          git push
+          git push https://x-access-token:${GH_PAT}@github.com/JuliaHazenberg/crits-website.git HEAD:main
