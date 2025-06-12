@@ -29,21 +29,21 @@ jobs:
       - name: Run generate_courses.py
         run: python generate_courses.py
 
-      - name: Debug Git Remote
-        run: |
-          git remote -v
-          
-      - name: Debug Git Identity
-        run: |
-          git config --global user.name
-          git config --global user.email
 
-      - name: Commit and push generated files
+      - name: Set Git identity and remote
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/JuliaHazenberg/crits-website.git
+          
+      - name: Debug Git Remote
+        run: git remote -v
+
+      - name: Commit and push generated files
+        run: |
           git add courses/ index.html
           git commit -m "Auto-generated courses and index" || echo "No changes to commit"
-          git push https://x-access-token:${GH_PAT}@github.com/JuliaHazenberg/crits-website.git HEAD:main
+          git push origin HEAD:main
+
