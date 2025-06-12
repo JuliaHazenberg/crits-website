@@ -40,6 +40,12 @@ jobs:
           
       - name: Debug Git Remote
         run: git remote -v
+        
+      - name: Debug token usage (safe)
+        run: |
+          echo "Remote URL: https://x-access-token:${GH_PAT:0:4}***@github.com/JuliaHazenberg/crits-website.git"
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
 
       - name: Commit and push generated files
         run: |
