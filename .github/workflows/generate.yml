@@ -6,6 +6,7 @@ on:
       - 'gpx_files/**'
       - 'templates/**'
       - 'generate_courses.py'
+      - 'requirements.txt'
 
 jobs:
   build:
@@ -20,17 +21,18 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install dependencies if requirements.txt exists
+      - name: Install dependencies
         run: |
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Run generate_courses.py
         run: python generate_courses.py
 
-      - name: Commit and push changes
+      - name: Commit and push generated files
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add courses/ index.html
-          git commit -m "Auto-generate courses and index.html" || echo "No changes to commit"
+          git commit -m "Auto-generated courses and index" || echo "No changes to commit"
           git push
