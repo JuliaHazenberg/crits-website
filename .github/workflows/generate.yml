@@ -29,6 +29,15 @@ jobs:
       - name: Run generate_courses.py
         run: python generate_courses.py
 
+      - name: Debug Git Remote
+        run: |
+          git remote -v
+          
+      - name: Debug Git Identity
+        run: |
+          git config --global user.name
+          git config --global user.email
+
       - name: Commit and push generated files
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
