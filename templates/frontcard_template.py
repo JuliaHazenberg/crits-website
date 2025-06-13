@@ -28,23 +28,24 @@ def process_frontcard(gpx_path, output_dir, critname, year):
 
     # Detect laps
     start_point = points[0][:2]
-    lap_threshold = 15
+    lap_threshold = 15  # meters
     lap_indices = [0]
     for i, (lat, lon, _) in enumerate(points[1:], start=1):
         if geodesic(start_point, (lat, lon)).meters < lap_threshold:
-            if i - lap_indices[-1] > 20:
+            if i - lap_indices[-1] > 20:  # avoid duplicates
                 lap_indices.append(i)
 
     if len(lap_indices) < 2:
         print("Not enough laps detected.")
         return
 
-    mid_lap = len(lap_indices) // 2
-    start = lap_indices[mid_lap - 1]
-    end = lap_indices[mid_lap]
-    lap_coords = [(p[0], p[1]) for p in points[start:end]]
+    # Extract full lap
+    midpoint = len(lap_indices) // 2
+    lap_coords = [
+        (lat, lon) for (lat, lon, _) in points[lap_indices[midpoint - 1]:lap_indices[midpoint]]
+    ]
 
-    # ✅ Ensure full loop by appending start to end if needed
+    # Close loop if needed
     if geodesic(lap_coords[0], lap_coords[-1]).meters > 3:
         lap_coords.append(lap_coords[0])
 
@@ -52,13 +53,22 @@ def process_frontcard(gpx_path, output_dir, critname, year):
     longitudes = [c[1] for c in lap_coords]
     bounds = [[min(latitudes), min(longitudes)], [max(latitudes), max(longitudes)]]
 
-    m = folium.Map(location=[sum(latitudes) / len(latitudes), sum(longitudes) / len(longitudes)],
-                   zoom_start=18, tiles="OpenStreetMap")
+    # Create map with zoom and scroll disabled
+    m = folium.Map(
+        location=[sum(latitudes) / len(latitudes), sum(longitudes) / len(longitudes)],
+        zoom_start=18,
+        tiles="OpenStreetMap",
+        zoom_control=False,
+        scrollWheelZoom=False,
+        dragging=True,  # Keep panning (just remove zoom)
+    )
     m.fit_bounds(bounds, max_zoom=17, padding=(50, 50))
 
     folium.PolyLine(lap_coords, color="darkgreen", weight=6, opacity=0.9).add_to(m)
 
+    # Render map
     map_html = m.get_root().render()
+
     frontcard_html = f"""
     <html>
         <head>
@@ -72,12 +82,13 @@ def process_frontcard(gpx_path, output_dir, critname, year):
     </html>
     """
 
+    # Save file
     frontcard_filename = f"{critname}_crit_{year}_frontcard.html"
     frontcard_path = os.path.join(output_dir, frontcard_filename)
 
     os.makedirs(output_dir, exist_ok=True)
 
-    with open(frontcard_path, "w") as f:
+    with open(frontcard_path, "w", encoding="utf-8") as f:
         f.write(frontcard_html)
 
     print(f"✅ Saved frontcard map to {frontcard_path}")
