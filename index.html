@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crit Courses</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .filter-bar {
+      margin: 1rem;
+      text-align: center;
+    }
+    .filter-bar select {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Crit Courses</h1>
+  </header>
+
+  <div class="filter-bar">
+    <label for="stateFilter">Filter by State:</label>
+    <select id="stateFilter">
+      <option value="all">All States</option>
+      
+    </select>
+  </div>
+
+  <main class="card-container">
+    
+  </main>
+
+  <script>
+    const select = document.getElementById('stateFilter');
+    const cards = document.querySelectorAll('.course-card');
+
+    select.addEventListener('change', () => {
+      const selected = select.value;
+      cards.forEach(card => {
+        if (selected === 'all' || card.dataset.state === selected) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
