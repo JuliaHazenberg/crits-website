@@ -31,13 +31,20 @@ jobs:
 
       - name: Set Git identity and remote
         run: |
+          echo "Setting Git identity..."
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
+          echo "Setting remote URL with PAT..."
           git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/JuliaHazenberg/crits-website.git
-
+          git remote -v
+      
       - name: Commit and push generated files
         run: |
-          git add courses/ index.html
+          echo "Adding files..."
+          git add courses/ index.html || echo "Nothing to add"
+          git status
           git commit -m "Auto-generated courses and index" || echo "No changes to commit"
+          echo "Pushing changes..."
           git push origin HEAD:main
+
 
