@@ -194,7 +194,6 @@ def process_course(gpx_path, output_dir, critname, year):
     html_content = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
-  <base href="/crits-website/">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{critname} Crit {year} - Course Details</title>
@@ -214,7 +213,7 @@ def process_course(gpx_path, output_dir, critname, year):
 <body>
   <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center top-bar">
-      <a href="index.html" class="btn btn-outline-primary">← Home</a>
+      <a href="/crits-website/index.html" class="btn btn-outline-primary">← Home</a>
       <a href="../../courses/{critname}_{year}/{critname}_crit_{year}.gpx" class="btn btn-outline-secondary" download>Download GPX</a>
     </div>
     <h1 class="text-center mb-4">{critname} Crit {year}</h1>
@@ -231,7 +230,7 @@ def process_course(gpx_path, output_dir, critname, year):
       <div id="stats-container" class="stats-grid"></div>
     </div>
     <script>
-      fetch('./{critname}_crit_{year}_stats.json')
+      fetch('{critname}_crit_{year}_stats.json')
         .then(res => res.json())
         .then(data => {{
           const stats = [
@@ -249,7 +248,7 @@ def process_course(gpx_path, output_dir, critname, year):
           }});
         }});
 
-      fetch('./{critname}_crit_{year}_elevation_data.json')
+      fetch('{critname}_crit_{year}_elevation_data.json')
         .then(res => res.json())
         .then(data => {{
           Plotly.newPlot('elevation-chart', [{{
