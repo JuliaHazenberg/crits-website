@@ -231,7 +231,7 @@ def process_course(gpx_path, output_dir, critname, year):
       <div id="stats-container" class="stats-grid"></div>
     </div>
     <script>
-      fetch('{critname}_crit_{year}_stats.json')
+      fetch('./{critname}_crit_{year}_stats.json')
         .then(res => res.json())
         .then(data => {{
           const stats = [
@@ -249,7 +249,7 @@ def process_course(gpx_path, output_dir, critname, year):
           }});
         }});
 
-      fetch('{critname}_crit_{year}_elevation_data.json')
+      fetch('./{critname}_crit_{year}_elevation_data.json')
         .then(res => res.json())
         .then(data => {{
           Plotly.newPlot('elevation-chart', [{{
