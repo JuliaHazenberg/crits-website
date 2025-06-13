@@ -194,6 +194,7 @@ def process_course(gpx_path, output_dir, critname, year):
     html_content = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
+  <base href="/crits-website/">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{critname} Crit {year} - Course Details</title>
@@ -213,7 +214,7 @@ def process_course(gpx_path, output_dir, critname, year):
 <body>
   <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center top-bar">
-      <a href="./index.html" class="btn btn-outline-primary">← Home</a>
+      <a href="index.html" class="btn btn-outline-primary">← Home</a>
       <a href="../../courses/{critname}_{year}/{critname}_crit_{year}.gpx" class="btn btn-outline-secondary" download>Download GPX</a>
     </div>
     <h1 class="text-center mb-4">{critname} Crit {year}</h1>
