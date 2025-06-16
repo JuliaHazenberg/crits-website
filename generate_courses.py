@@ -163,8 +163,13 @@ print("✅ index.html generated.")
 
 # Load events
 if os.path.exists(EVENTS_JSON):
-    with open(EVENTS_JSON, encoding="utf-8") as f:
-        events = json.load(f)
+        with open(EVENTS_JSON, encoding="utf-8") as f:
+            try:
+                events = json.load(f)
+            except json.JSONDecodeError as e:
+                print(f"❌ Error loading events.json: {e}")
+                events = []
+
 
     events_by_month = defaultdict(list)
     for e in events:
