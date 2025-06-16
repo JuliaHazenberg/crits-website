@@ -212,7 +212,7 @@ if os.path.exists(EVENTS_JSON):
     }}
 
     header h1 {{
-      font-size: 2rem;
+      font-size: 4rem;
       margin: 0 0 0.5rem 0;
     }}
 
