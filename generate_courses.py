@@ -46,25 +46,44 @@ for filename in os.listdir(GPX_DIR):
     gpx_path = os.path.join(GPX_DIR, filename)
     output_subdir = os.path.join(OUTPUT_DIR, folder_name)
 
-    if not os.path.exists(output_subdir):
-        print(f"Processing: {folder_name}")
-        os.makedirs(output_subdir)
+    # if not os.path.exists(output_subdir):
+    #     print(f"Processing: {folder_name}")
+    #     os.makedirs(output_subdir)
 
-        # Generate Course Details HTML
-        details_template.process_course(
-            gpx_path=gpx_path,
-            output_dir=output_subdir,
-            critname=critname_raw,
-            year=year
-        )
+    #     # Generate Course Details HTML
+    #     details_template.process_course(
+    #         gpx_path=gpx_path,
+    #         output_dir=output_subdir,
+    #         critname=critname_raw,
+    #         year=year
+    #     )
 
-        # Generate Frontcard HTML
-        frontcard_template.process_frontcard(
-            gpx_path=gpx_path,
-            output_dir=output_subdir,
-            critname=critname_raw,
-            year=year
-        )
+    #     # Generate Frontcard HTML
+    #     frontcard_template.process_frontcard(
+    #         gpx_path=gpx_path,
+    #         output_dir=output_subdir,
+    #         critname=critname_raw,
+    #         year=year
+    #     )
+
+    print(f"Processing: {folder_name}")
+    os.makedirs(output_subdir, exist_ok=True)
+    
+    # Always regenerate course details
+    details_template.process_course(
+        gpx_path=gpx_path,
+        output_dir=output_subdir,
+        critname=critname_raw,
+        year=year
+    )
+    
+    # Always regenerate frontcard
+    frontcard_template.process_frontcard(
+        gpx_path=gpx_path,
+        output_dir=output_subdir,
+        critname=critname_raw,
+        year=year
+    )
 
     stats_path = os.path.join(output_subdir, f"{critname_raw}_crit_{year}_stats.json")
     with open(stats_path, encoding="utf-8") as stats_file:
