@@ -141,6 +141,9 @@ with open(INDEX_HTML, "w", encoding="utf-8") as f:
       }});
     }});
   </script>
+    <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
+    © 2025 Julia Hazenberg. All rights reserved. The information on this website is for general informational purposes only and subject to change.
+     </footer>
 </body>
 </html>""")
 
