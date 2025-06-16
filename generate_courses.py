@@ -2,12 +2,15 @@ import os
 import re
 from templates import details_template, frontcard_template
 import json
+from collections import defaultdict
 
 # Paths
 BASE_DIR = os.path.dirname(__file__)
 GPX_DIR = os.path.join(BASE_DIR, "gpx_files")
 OUTPUT_DIR = os.path.join(BASE_DIR, "courses")
 INDEX_HTML = os.path.join(BASE_DIR, "index.html")
+CALENDAR_HTML = os.path.join(BASE_DIR, "calendar.html")
+EVENTS_JSON = os.path.join(BASE_DIR, "data", "events.json")
 
 # Ensure output directory exists
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -16,10 +19,9 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 pattern = re.compile(r"(?P<critname>.+?)_crit_(?P<year>\d{4})\.gpx")
 
 # Store course info for index.html
-course_info_list = []  # Will hold dicts with all info for sorting
-states = set()  # Collect unique states
+course_info_list = []
+states = set()
 
-# Function to maintain case for specific words
 def fix_case(critname_raw):
     special_case_words = ['ToAD', 'CBR']
     critname = ' '.join(
@@ -28,7 +30,7 @@ def fix_case(critname_raw):
     )
     return critname
 
-# Scan for .gpx files
+# Process all GPX files
 for filename in os.listdir(GPX_DIR):
     if not filename.endswith(".gpx"):
         continue
@@ -46,40 +48,16 @@ for filename in os.listdir(GPX_DIR):
     gpx_path = os.path.join(GPX_DIR, filename)
     output_subdir = os.path.join(OUTPUT_DIR, folder_name)
 
-    # below for when you only want incremental addition of course files.
-    
-    # if not os.path.exists(output_subdir):
-    #     print(f"Processing: {folder_name}")
-    #     os.makedirs(output_subdir)
-
-    #     # Generate Course Details HTML
-    #     details_template.process_course(
-    #         gpx_path=gpx_path,
-    #         output_dir=output_subdir,
-    #         critname=critname_raw,
-    #         year=year
-    #     )
-
-    #     # Generate Frontcard HTML
-    #     frontcard_template.process_frontcard(
-    #         gpx_path=gpx_path,
-    #         output_dir=output_subdir,
-    #         critname=critname_raw,
-    #         year=year
-    #     )
-
     print(f"Processing: {folder_name}")
     os.makedirs(output_subdir, exist_ok=True)
-    
-    # Always regenerate course details
+
     details_template.process_course(
         gpx_path=gpx_path,
         output_dir=output_subdir,
         critname=critname_raw,
         year=year
     )
-    
-    # Always regenerate frontcard
+
     frontcard_template.process_frontcard(
         gpx_path=gpx_path,
         output_dir=output_subdir,
@@ -101,10 +79,9 @@ for filename in os.listdir(GPX_DIR):
         "state": state,
     })
 
-# Sort courses alphabetically by critname (case-insensitive)
+# Sort and generate index.html
 course_info_list.sort(key=lambda x: x["critname"].lower())
 
-# Generate HTML cards after sorting
 course_cards = []
 for c in course_info_list:
     course_cards.append(f"""
@@ -119,7 +96,6 @@ for c in course_info_list:
 </a>
 """)
 
-# Generate index.html with filter dropdown and JS
 with open(INDEX_HTML, "w", encoding="utf-8") as f:
     f.write(f"""<!DOCTYPE html>
 <html lang="en">
@@ -142,6 +118,10 @@ with open(INDEX_HTML, "w", encoding="utf-8") as f:
 <body>
   <header>
     <h1>Crit Courses</h1>
+    <nav style="text-align: center; margin-bottom: 1rem;">
+      <a href="index.html">Home</a> |
+      <a href="calendar.html">Event Calendar</a>
+    </nav>
   </header>
 
   <div class="filter-bar">
@@ -171,10 +151,83 @@ with open(INDEX_HTML, "w", encoding="utf-8") as f:
       }});
     }});
   </script>
-    <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
-    © 2025 Julia Hazenberg. All rights reserved. The information on this website is for general informational purposes only and subject to change.
-     </footer>
+  <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
+    © 2025 Julia Hazenberg. All rights reserved.
+  </footer>
 </body>
 </html>""")
 
 print("✅ index.html generated.")
+
+# --- CALENDAR GENERATION ---
+
+# Load events
+if os.path.exists(EVENTS_JSON):
+    with open(EVENTS_JSON, encoding="utf-8") as f:
+        events = json.load(f)
+
+    events_by_month = defaultdict(list)
+    for e in events:
+        month = e["date"]
+        critname = e["critname"]
+        events_by_month[month].append(critname)
+
+    month_order = ["January", "February", "March", "April", "May", "June",
+                   "July", "August", "September", "October", "November", "December"]
+
+    sections = ""
+    for month in month_order:
+        if month in events_by_month:
+            items = "".join(f"<li>{event}</li>" for event in sorted(events_by_month[month]))
+            sections += f"<section><h2>{month}</h2><ul>{items}</ul></section>"
+        else:
+            sections += f"<section><h2>{month}</h2><p>No events listed.</p></section>"
+
+    calendar_html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crit Event Calendar</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {{
+      font-family: sans-serif;
+      padding: 2rem;
+    }}
+    h1 {{
+      text-align: center;
+    }}
+    h2 {{
+      margin-top: 2rem;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 0.3rem;
+    }}
+    ul {{
+      list-style-type: disc;
+      margin-left: 2rem;
+    }}
+    nav {{
+      text-align: center;
+      margin-bottom: 2rem;
+    }}
+  </style>
+</head>
+<body>
+  <h1>Crit Event Calendar</h1>
+  <nav>
+    <a href="index.html">Home</a>
+  </nav>
+  {sections}
+  <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
+    © 2025 Julia Hazenberg. All rights reserved.
+  </footer>
+</body>
+</html>
+"""
+
+    with open(CALENDAR_HTML, "w", encoding="utf-8") as f:
+        f.write(calendar_html)
+
+    print("✅ calendar.html generated.")
+else:
+    print("⚠️ events.json not found — skipping calendar generation.")
