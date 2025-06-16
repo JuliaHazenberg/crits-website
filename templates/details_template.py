@@ -282,6 +282,9 @@ def process_course(gpx_path, output_dir, critname, year):
         }});
     </script>
   </div>
+    <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
+    © 2025 Julia Hazenberg. All rights reserved. The information on this website is for general informational purposes only and is subject to change. No rights can be derived from the content.
+  </footer>
 </body>
 </html>"""
 
