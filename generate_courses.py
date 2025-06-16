@@ -188,7 +188,7 @@ if os.path.exists(EVENTS_JSON):
         else:
             sections += f"<section><h2>{month}</h2><p>No events listed.</p></section>"
 
-    calendar_html = f"""<!DOCTYPE html>
+calendar_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -208,24 +208,21 @@ if os.path.exists(EVENTS_JSON):
       color: #fff;
       padding: 1.2rem;
       text-align: center;
-      font-size: 1.6rem;
       font-weight: bold;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     }}
 
     header h1 {{
-      margin: 0;
       font-size: 2rem;
+      margin: 0 0 0.5rem 0;
     }}
 
     nav {{
-      text-align: center;
-      margin: 1rem 0;
       font-size: 1rem;
     }}
 
     nav a {{
-      color: #004c3f;
+      color: white;
       text-decoration: none;
       margin: 0 1rem;
       font-weight: 600;
@@ -265,20 +262,23 @@ if os.path.exists(EVENTS_JSON):
 </head>
 <body>
   <header>
-    <h1>Crit Event Calendar</h1>
+    <h1>Crit Courses</h1>
+    <nav>
+      <a href="index.html">Home</a> |
+      <a href="calendar.html">Event Calendar</a>
+    </nav>
   </header>
 
-  <nav>
-    <a href="index.html">Home</a>
-  </nav>
-
-  {sections}
+  <main>
+    {sections}
+  </main>
 
   <footer>
     © 2025 Julia Hazenberg. All rights reserved.
   </footer>
 </body>
 </html>"""
+
 
     with open(CALENDAR_HTML, "w", encoding="utf-8") as f:
         f.write(calendar_html)
