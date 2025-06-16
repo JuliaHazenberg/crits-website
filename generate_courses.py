@@ -213,6 +213,11 @@ if os.path.exists(EVENTS_JSON):
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     }}
 
+    header h1 {{
+      margin: 0;
+      font-size: 2rem;
+    }}
+
     nav {{
       text-align: center;
       margin: 1rem 0;
@@ -260,11 +265,12 @@ if os.path.exists(EVENTS_JSON):
 </head>
 <body>
   <header>
-    Crit Event Calendar
-    <nav>
-      <a href="index.html">Home</a>
-    </nav>
+    <h1>Crit Event Calendar</h1>
   </header>
+
+  <nav>
+    <a href="index.html">Home</a>
+  </nav>
 
   {sections}
 
