@@ -22,7 +22,7 @@ def process_course(gpx_path, output_dir, critname, year):
         gpx.creator = "crit-course-script"
         for track in gpx.tracks:
           print(track.name)
-          track.name = f"{critname} Crit {year}"  # ✅ Set clean name
+          track.name = f"{critname} Crit {year}" 
           print(track.name)
           track.description = None
           track.comment = None
@@ -69,7 +69,7 @@ def process_course(gpx_path, output_dir, critname, year):
     print(lap_end)
 
     if geodesic(lap[0][:2], lap[-1][:2]).meters > 5:
-    # Force loop closure: append starting point at the end with original elevation
+    # Force loop closure: append starting point at the end with original elevation for smoothnes
       lap.append((lap[0][0], lap[0][1], lap[0][2]))
 
     lap_coords = [(p[0], p[1]) for p in lap]
@@ -96,7 +96,6 @@ def process_course(gpx_path, output_dir, critname, year):
     if location and 'state' in location.raw['address']:
       state = location.raw['address']['state']
 
-
     m = folium.Map(location=[lat_center, lon_center], zoom_start=17)
     color_scale = branca.colormap.StepColormap(
         colors=["darkgreen", "lightgreen", "yellow", "orange", "red", "darkred"],
@@ -113,7 +112,7 @@ def process_course(gpx_path, output_dir, critname, year):
         segment = folium.PolyLine([coords[i], coords[i + 1]], color=color, weight=8, opacity=0.9,
                                   tooltip=f"Gradient: {gradient:.1f}%").add_to(m)
         
-        # Add arrow pointing forward
+        # Add arrow pointing in direction of crit
         PolyLineTextPath(
             segment,
             '➤',
@@ -134,13 +133,13 @@ def process_course(gpx_path, output_dir, critname, year):
     m.save(os.path.join(output_dir, f"{critname}_crit_{year}_map.html"))
 
     def is_clockwise(coords):
-        # Shoelace formula to compute signed area
+        # formula to compute signed area (shoelace)
         area = 0
         for i in range(len(coords)):
             lat1, lon1 = coords[i]
             lat2, lon2 = coords[(i + 1) % len(coords)]
             area += (lon2 - lon1) * (lat2 + lat1)
-        return area > 0  # Positive = clockwise in this coordinate system
+        return area > 0  # Positive = clockwise in this system
 
     direction_str = "Clockwise" if is_clockwise(lap_coords) else "Counter-Clockwise"
 
