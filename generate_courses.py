@@ -16,14 +16,12 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 pattern = re.compile(r"(?P<critname>.+?)_crit_(?P<year>\d{4})\.gpx")
 
 # Store course info for index.html
-course_cards = []
-states = set()  # <-- Collect unique states
+course_info_list = []  # Will hold dicts with all info for sorting
+states = set()  # Collect unique states
 
 # Function to maintain case for specific words
 def fix_case(critname_raw):
-    # List of words to keep in a specific case
     special_case_words = ['ToAD', 'CBR']
-    # Split critname into words and fix case
     critname = ' '.join(
         word if word in special_case_words else word.capitalize()
         for word in critname_raw.replace('_', ' ').split()
@@ -42,8 +40,6 @@ for filename in os.listdir(GPX_DIR):
 
     critname_raw = match.group("critname")
     year = match.group("year")
-
-    # Use the custom case fixing function here
     critname = fix_case(critname_raw)
 
     folder_name = f"{critname_raw}_{year}"
@@ -70,21 +66,34 @@ for filename in os.listdir(GPX_DIR):
             year=year
         )
 
-    # ✅ Now correctly indented inside the loop
     stats_path = os.path.join(output_subdir, f"{critname_raw}_crit_{year}_stats.json")
     with open(stats_path, encoding="utf-8") as stats_file:
         stats = json.load(stats_file)
-        state = stats.get("State", "Unknown").replace(" ", "_")  # Avoid spaces in HTML attributes
-        states.add(state)  # Collect states
+        state = stats.get("State", "Unknown").replace(" ", "_")
+        states.add(state)
 
+    course_info_list.append({
+        "folder_name": folder_name,
+        "critname": critname,
+        "critname_raw": critname_raw,
+        "year": year,
+        "state": state,
+    })
+
+# Sort courses alphabetically by critname (case-insensitive)
+course_info_list.sort(key=lambda x: x["critname"].lower())
+
+# Generate HTML cards after sorting
+course_cards = []
+for c in course_info_list:
     course_cards.append(f"""
-<a href="courses/{folder_name}/{critname_raw}_crit_{year}_details.html" class="course-card" data-state="{state}">
+<a href="courses/{c['folder_name']}/{c['critname_raw']}_crit_{c['year']}_details.html" class="course-card" data-state="{c['state']}">
 <div class="card-header">
-  <h3 class="card-title">{critname} Crit</h3>
-  <p class="card-year">{year}</p>
+  <h3 class="card-title">{c['critname']} Crit</h3>
+  <p class="card-year">{c['year']}</p>
 </div>
 <div class="card-map">
-  <iframe src="courses/{folder_name}/{critname_raw}_crit_{year}_frontcard.html" loading="lazy"></iframe>
+  <iframe src="courses/{c['folder_name']}/{c['critname_raw']}_crit_{c['year']}_frontcard.html" loading="lazy"></iframe>
 </div>
 </a>
 """)
