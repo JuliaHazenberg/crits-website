@@ -53,24 +53,38 @@ def process_frontcard(gpx_path, output_dir, critname, year):
     longitudes = [c[1] for c in lap_coords]
     bounds = [[min(latitudes), min(longitudes)], [max(latitudes), max(longitudes)]]
 
-    # Create map with zoom and scroll disabled
+    # Create fully static map
     m = folium.Map(
         location=[sum(latitudes) / len(latitudes), sum(longitudes) / len(longitudes)],
         zoom_start=18,
         tiles="OpenStreetMap",
         zoom_control=False,
         scrollWheelZoom=False,
-        dragging=True,  # Keep panning (just remove zoom)
+        dragging=False,
+        prefer_canvas=True,
     )
     m.fit_bounds(bounds, max_zoom=17, padding=(50, 50))
 
     folium.PolyLine(lap_coords, color="darkgreen", weight=6, opacity=0.9).add_to(m)
 
+    # Disable all map interactivity using JS
+    m.get_root().html.add_child(folium.Element("""
+    <script>
+        var map = document.getElementsByClassName('folium-map')[0]._leaflet_map;
+        map.touchZoom.disable();
+        map.doubleClickZoom.disable();
+        map.scrollWheelZoom.disable();
+        map.boxZoom.disable();
+        map.keyboard.disable();
+        map.dragging.disable();
+        if (map.tap) map.tap.disable();
+    </script>
+    """))
+
     # Render map
     map_html = m.get_root().render()
-    
-    # Check if it's ToAD
-       # Check if it's ToAD
+
+    # Label if it's ToAD
     is_toad = "toad" in critname.lower()
 
     frontcard_html = f"""
@@ -104,7 +118,6 @@ def process_frontcard(gpx_path, output_dir, critname, year):
         </body>
     </html>
     """
-
 
     # Save file
     frontcard_filename = f"{critname}_crit_{year}_frontcard.html"
