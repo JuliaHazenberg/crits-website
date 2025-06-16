@@ -68,19 +68,43 @@ def process_frontcard(gpx_path, output_dir, critname, year):
 
     # Render map
     map_html = m.get_root().render()
+    
+    # Check if it's ToAD
+       # Check if it's ToAD
+    is_toad = "toad" in critname.lower()
 
     frontcard_html = f"""
     <html>
         <head>
             <link rel="stylesheet" type="text/css" href="style.css">
+            <style>
+                .toad-label {{
+                    position: absolute;
+                    top: 8px;
+                    left: 8px;
+                    background-color: #28a745;
+                    color: white;
+                    font-size: 0.8rem;
+                    padding: 4px 8px;
+                    border-radius: 4px;
+                    font-weight: bold;
+                    font-family: sans-serif;
+                    z-index: 1000;
+                }}
+                .map-wrapper {{
+                    position: relative;
+                }}
+            </style>
         </head>
         <body>
-            <div class="map-container">
+            <div class="map-wrapper">
+                {"<div class='toad-label'>ToAD</div>" if is_toad else ""}
                 {map_html}
             </div>
         </body>
     </html>
     """
+
 
     # Save file
     frontcard_filename = f"{critname}_crit_{year}_frontcard.html"
