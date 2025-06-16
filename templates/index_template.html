@@ -32,7 +32,7 @@
   </div>
 
   <main class="card-container">
-    {% for course in courses %}
+    {% for course in courses|sort(attribute='critname') %}
     <a href="courses/{{ course.critname|capitalize }}_{{ course.year }}/{{ course.critname|lower }}_crit_{{ course.year }}_details.html"
        class="course-card"
        data-state="{{ course.state }}">
