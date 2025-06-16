@@ -46,6 +46,8 @@ for filename in os.listdir(GPX_DIR):
     gpx_path = os.path.join(GPX_DIR, filename)
     output_subdir = os.path.join(OUTPUT_DIR, folder_name)
 
+    # below for when you only want incremental addition of course files.
+    
     # if not os.path.exists(output_subdir):
     #     print(f"Processing: {folder_name}")
     #     os.makedirs(output_subdir)
