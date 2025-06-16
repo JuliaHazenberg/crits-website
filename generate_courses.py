@@ -196,39 +196,83 @@ if os.path.exists(EVENTS_JSON):
   <link rel="stylesheet" href="style.css" />
   <style>
     body {{
-      font-family: sans-serif;
-      padding: 2rem;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f5f5;
+      color: #333;
+      margin: 0;
+      padding: 0;
     }}
-    h1 {{
+
+    header {{
+      background-color: #004c3f;
+      color: #fff;
+      padding: 1.2rem;
       text-align: center;
+      font-size: 1.6rem;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     }}
+
+    nav {{
+      text-align: center;
+      margin: 1rem 0;
+      font-size: 1rem;
+    }}
+
+    nav a {{
+      color: #004c3f;
+      text-decoration: none;
+      margin: 0 1rem;
+      font-weight: 600;
+    }}
+
+    nav a:hover {{
+      text-decoration: underline;
+    }}
+
     h2 {{
       margin-top: 2rem;
       border-bottom: 1px solid #ccc;
       padding-bottom: 0.3rem;
+      color: #004c3f;
     }}
+
+    section {{
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      padding: 0 1rem;
+    }}
+
     ul {{
       list-style-type: disc;
       margin-left: 2rem;
     }}
-    nav {{
+
+    footer {{
       text-align: center;
-      margin-bottom: 2rem;
+      padding: 1em;
+      font-size: 0.8em;
+      color: gray;
+      background-color: #f5f5f5;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
     }}
   </style>
 </head>
 <body>
-  <h1>Crit Event Calendar</h1>
-  <nav>
-    <a href="index.html">Home</a>
-  </nav>
+  <header>
+    Crit Event Calendar
+    <nav>
+      <a href="index.html">Home</a>
+    </nav>
+  </header>
+
   {sections}
-  <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
+
+  <footer>
     © 2025 Julia Hazenberg. All rights reserved.
   </footer>
 </body>
-</html>
-"""
+</html>"""
 
     with open(CALENDAR_HTML, "w", encoding="utf-8") as f:
         f.write(calendar_html)
