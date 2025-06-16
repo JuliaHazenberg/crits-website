@@ -53,7 +53,7 @@ def process_frontcard(gpx_path, output_dir, critname, year):
     longitudes = [c[1] for c in lap_coords]
     bounds = [[min(latitudes), min(longitudes)], [max(latitudes), max(longitudes)]]
 
-    # Create fully static map
+    # Create fully static map so it is not annoying when scrolling on phone
     m = folium.Map(
         location=[sum(latitudes) / len(latitudes), sum(longitudes) / len(longitudes)],
         zoom_start=18,
