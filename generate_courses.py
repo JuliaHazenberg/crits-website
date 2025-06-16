@@ -161,7 +161,7 @@ print("✅ index.html generated.")
 
 # --- CALENDAR GENERATION ---
 
-# Load events
+# Load events and generate calendar only if events.json exists
 if os.path.exists(EVENTS_JSON):
     with open(EVENTS_JSON, encoding="utf-8") as f:
         try:
@@ -169,7 +169,6 @@ if os.path.exists(EVENTS_JSON):
         except json.JSONDecodeError as e:
             print(f"❌ Error loading events.json: {e}")
             events = []
-
 
     events_by_month = defaultdict(list)
     for e in events:
@@ -188,7 +187,7 @@ if os.path.exists(EVENTS_JSON):
         else:
             sections += f"<section><h2>{month}</h2><p>No events listed.</p></section>"
 
-calendar_html = f"""<!DOCTYPE html>
+    calendar_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -278,7 +277,6 @@ calendar_html = f"""<!DOCTYPE html>
   </footer>
 </body>
 </html>"""
-
 
     with open(CALENDAR_HTML, "w", encoding="utf-8") as f:
         f.write(calendar_html)
