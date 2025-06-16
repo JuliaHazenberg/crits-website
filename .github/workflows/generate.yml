@@ -1,6 +1,7 @@
 name: Generate Courses
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'gpx_files/**'
