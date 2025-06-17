@@ -1,30 +1,37 @@
 [
   {
     "date": "May",
-    "critname": "La Crosse Omnium"
+    "critname": "La Crosse Omnium",
+    "state": "Wisconsin"
   },
   {
     "date": "June",
-    "critname": "Cobb Park Criterium"
+    "critname": "Cobb Park Criterium",
+    "state": "Illinois"
   },
   {
     "date": "May",
-    "critname": "Concordia Criterium"
+    "critname": "Concordia Criterium",
+    "state": "Wisconsin"
   },
   {
     "date": "April",
-    "critname": "Redlands Criterium"
+    "critname": "Redlands Criterium",
+    "state": "California"
   },
   {
     "date": "June",
-    "critname": "ToAD Grafton"
+    "critname": "ToAD Grafton",
+    "state": "Wisconsin"
   },
   {
     "date": "June",
-    "critname": "ToAD Janesville"
+    "critname": "ToAD Janesville",
+    "state": "Wisconsin"
   }, 
   {
     "date": "May",
-    "critname": "Triton Criterium"
+    "critname": "Triton Criterium",
+    "state": "California"
   }
 ]
