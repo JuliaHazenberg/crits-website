@@ -6,6 +6,7 @@ import folium
 from datetime import datetime
 from collections import defaultdict
 from templates import details_template, frontcard_template
+from bs4 import BeautifulSoup
 
 # ---- CONFIG ----
 BASE_DIR      = os.path.dirname(__file__)
@@ -223,7 +224,7 @@ with open(CALENDAR_HTML, "w", encoding="utf-8") as f:
 print("✅ calendar.html generated")
 
 # --- EVENT_MAP.HTML ---
-# Create map
+# Step 1: Create the Folium map and save temporarily
 m = folium.Map(location=[39.5, -98.35], zoom_start=4, tiles="OpenStreetMap")
 for loc in crit_locations:
     folium.Marker(
@@ -233,26 +234,25 @@ for loc in crit_locations:
         icon=folium.Icon(color="blue", icon="bicycle", prefix="fa")
     ).add_to(m)
 
-# Save temporary Folium map to extract head/body
 temp_map_path = os.path.join(BASE_DIR, "temp_event_map.html")
 m.save(temp_map_path)
 
-# Extract <head> and <body> contents
+# Step 2: Use BeautifulSoup to extract head and body contents from the Folium map
 with open(temp_map_path, "r", encoding="utf-8") as f:
-    html = f.read()
-head = html.split("<head>")[1].split("</head>")[0]
-body = html.split("<body>")[1].split("</body>")[0]
+    soup = BeautifulSoup(f, "html.parser")
+    folium_head = soup.head
+    folium_body = soup.body
 
-# Write final event_map.html
+# Step 3: Assemble final HTML using your layout and the extracted parts
 with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
     f.write(f"""<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Event Map</title>
-  <link rel="stylesheet" href="style.css">
-  {head}
+  <link rel="stylesheet" href="style.css" />
+  {folium_head}
 </head>
 <body>
   <header>
@@ -264,8 +264,8 @@ with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
     </nav>
   </header>
 
-  <main style="padding:1rem;">
-    {body}
+  <main style="width: 90%; margin: 0 auto; padding-top: 1rem;">
+    {folium_body}
   </main>
 
   <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
@@ -274,10 +274,10 @@ with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
 </body>
 </html>""")
 
-# Optional cleanup
 os.remove(temp_map_path)
 
 print("✅ event_map.html generated")
+
 
 print(f"📍 index.html will be saved to: {INDEX_HTML}")
 print(f"📍 calendar.html will be saved to: {CALENDAR_HTML}")
