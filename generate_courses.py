@@ -282,7 +282,7 @@ with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
   </main>
 
   <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
-    © 2025 Julia Hazenberg. All rights reserved.
+    © 2025 Julia Hazenberg. All rights reserved. For informational purposes only.
   </footer>
 </body>
 </html>""")
