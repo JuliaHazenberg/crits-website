@@ -194,7 +194,7 @@ if os.path.exists(EVENTS_JSON):
     # final HTML (brace‑escaped)
     # final HTML (brace‑escaped)
     
-       calendar_html = f"""<!DOCTYPE html>
+    calendar_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
