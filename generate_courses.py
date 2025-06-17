@@ -159,9 +159,7 @@ with open(INDEX_HTML, "w", encoding="utf-8") as f:
 
 print("✅ index.html generated.")
 
-# --- CALENDAR GENERATION ---
-
-# Load events and generate calendar only if events.json exists
+# --- CALENDAR GENERATION -----------------------------------------------
 if os.path.exists(EVENTS_JSON):
     with open(EVENTS_JSON, encoding="utf-8") as f:
         try:
@@ -170,31 +168,32 @@ if os.path.exists(EVENTS_JSON):
             print(f"❌ Error loading events.json: {e}")
             events = []
 
+    # group by month
     events_by_month = defaultdict(list)
     for e in events:
-        month = e["date"]
-        critname = e["critname"]
-        events_by_month[month].append(critname)
+        events_by_month[e["date"]].append(e["critname"])
 
-    month_order = ["January", "February", "March", "April", "May", "June",
-                   "July", "August", "September", "October", "November", "December"]
+    month_order = ["January","February","March","April","May","June",
+                   "July","August","September","October","November","December"]
 
+    # build responsive month‑cards
     sections = ""
-    for month in month_order:
-        if month in events_by_month:
-            items = "".join(f"<li>{event}</li>" for event in sorted(events_by_month[month]))
+    for m in month_order:
+        if m in events_by_month:
+            items = "".join(f"<li>{ev}</li>" for ev in sorted(events_by_month[m]))
             sections += f"""
             <div class="month-card">
-              <h2>{month}</h2>
+              <h2>{m}</h2>
               <ul>{items}</ul>
             </div>"""
         else:
             sections += f"""
             <div class="month-card">
-              <h2>{month}</h2>
+              <h2>{m}</h2>
               <p>No events listed.</p>
             </div>"""
 
+    # final HTML (brace‑escaped)
     calendar_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -203,122 +202,51 @@ if os.path.exists(EVENTS_JSON):
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="style.css" />
   <style>
-    body {
+    body {{
       font-family: 'Segoe UI', sans-serif;
       background-color: #f5f5f5;
       color: #333;
       margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background-color: #004c3f;
-      color: #fff;
-      padding: 1.5rem 1rem;
-      text-align: center;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    }
-
-    header h1 {
-      font-size: 3.5rem;
-      margin: 0 0 0.5rem 0;
-    }
-
-    nav {
-      font-size: 1rem;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 1rem;
-      font-weight: 600;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    main {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .month-card {
-      background-color: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      padding: 1.5rem;
-      min-height: 200px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      transition: transform 0.2s ease;
-    }
-
-    .month-card:hover {
-      transform: translateY(-4px);
-    }
-
-    .month-card h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      color: #004c3f;
-    }
-
-    .month-card ul {
-      padding-left: 1.2rem;
-      font-size: 1rem;
-      line-height: 1.5;
-    }
-
-    .month-card p {
-      font-size: 1rem;
-      color: #777;
-    }
-
-    footer {
-      text-align: center;
-      padding: 1em;
-      font-size: 0.8em;
-      color: gray;
-      background-color: #f5f5f5;
-      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-    }
+    }}
+    header {{
+      background:#004c3f; color:#fff; padding:1.5rem 1rem;
+      text-align:center; box-shadow:0 4px 10px rgba(0,0,0,.15);
+    }}
+    header h1 {{ font-size:3.5rem; margin:0 0 .5rem; }}
+    nav a {{ color:#fff; margin:0 1rem; font-weight:600; text-decoration:none; }}
+    nav a:hover {{ text-decoration:underline; }}
+    main {{ max-width:1200px; margin:2rem auto; padding:0 1rem; }}
+    .calendar-grid {{
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:1.5rem;
+    }}
+    .month-card {{
+      background:#fff; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,.08);
+      padding:1.5rem; min-height:200px; transition:transform .2s;
+    }}
+    .month-card:hover {{ transform:translateY(-4px); }}
+    .month-card h2 {{ font-size:1.5rem; color:#004c3f; margin:0 0 1rem; text-align:center; }}
+    ul {{ margin:0; padding-left:1.2rem; line-height:1.5; }}
+    footer {{
+      text-align:center; padding:1em; font-size:.8em; color:gray;
+      background:#f5f5f5; box-shadow:0 -2px 5px rgba(0,0,0,.1);
+    }}
   </style>
 </head>
 <body>
   <header>
     <h1>Crit Courses</h1>
-    <nav>
-      <a href="index.html">Home</a> |
-      <a href="calendar.html">Event Calendar</a>
-    </nav>
+    <nav><a href="index.html">Home</a> | <a href="calendar.html">Event Calendar</a></nav>
   </header>
 
-<main>
-  <div class="calendar-grid">
-    {sections}
-  </div>
-</main>
+  <main><div class="calendar-grid">{sections}</div></main>
 
-  <footer>
-    © 2025 Julia Hazenberg. All rights reserved.
-  </footer>
+  <footer>© 2025 Julia Hazenberg. All rights reserved.</footer>
 </body>
-</html>
-"""
+</html>"""
 
     with open(CALENDAR_HTML, "w", encoding="utf-8") as f:
         f.write(calendar_html)
-
     print("✅ calendar.html generated.")
 else:
-    print("⚠️ events.json not found — skipping calendar generation.")
+    print("⚠️ events.json not found — skipping calendar generation.")
