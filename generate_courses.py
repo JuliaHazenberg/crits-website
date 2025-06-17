@@ -224,7 +224,6 @@ with open(CALENDAR_HTML, "w", encoding="utf-8") as f:
 print("✅ calendar.html generated")
 
 # --- EVENT_MAP.HTML ---
-# Create map
 m = folium.Map(location=[39.5, -98.35], zoom_start=4, tiles="OpenStreetMap")
 for loc in crit_locations:
     folium.Marker(
@@ -234,26 +233,31 @@ for loc in crit_locations:
         icon=folium.Icon(color="blue", icon="bicycle", prefix="fa")
     ).add_to(m)
 
-# Save temporary Folium map to extract head/body
-temp_map_path = os.path.join(BASE_DIR, "temp_event_map.html")
+# Save raw map as temporary file
+temp_map_path = os.path.join(BASE_DIR, "temp_map.html")
 m.save(temp_map_path)
 
-# Extract <head> and <body> contents
-with open(temp_map_path, "r", encoding="utf-8") as f:
-    html = f.read()
-head = html.split("<head>")[1].split("</head>")[0]
-body = html.split("<body>")[1].split("</body>")[0]
+# Read contents of rendered map
+with open(temp_map_path, "r", encoding="utf-8") as mf:
+    folium_map_html = mf.read()
 
-# Write final event_map.html
+# Extract only the body content from Folium’s output
+body_start = folium_map_html.find("<body>")
+body_end = folium_map_html.find("</body>")
+if body_start != -1 and body_end != -1:
+    embedded_map = folium_map_html[body_start + len("<body>"):body_end].strip()
+else:
+    embedded_map = folium_map_html  # fallback: embed full thing
+
+# Write full event_map.html with consistent style
 with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
     f.write(f"""<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Event Map</title>
-  <link rel="stylesheet" href="style.css">
-  {head}
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
@@ -265,8 +269,8 @@ with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
     </nav>
   </header>
 
-  <main style="padding:1rem;">
-    {body}
+  <main style="width: 90%; margin: 0 auto; padding-top: 1rem;">
+    {embedded_map}
   </main>
 
   <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
