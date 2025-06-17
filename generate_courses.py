@@ -3,6 +3,7 @@ import re
 from templates import details_template, frontcard_template
 import json
 from collections import defaultdict
+from datetime import datetime
 
 # Paths
 BASE_DIR = os.path.dirname(__file__)
@@ -177,17 +178,22 @@ if os.path.exists(EVENTS_JSON):
                    "July","August","September","October","November","December"]
 
     # build month‑cards (NO leading new‑lines / spaces!)
+    # Get current month as string (e.g., "June")
+    current_month_name = datetime.now().strftime("%B")
+    
     month_cards = []
     for m in month_order:
+        highlight = " current-month" if m == current_month_name else ""
         if m in events_by_month:
             items = "".join(f"<li>{ev}</li>" for ev in sorted(events_by_month[m]))
             month_cards.append(
-                f'<div class="month-card"><h2>{m}</h2><ul>{items}</ul></div>'
+                f'<div class="month-card{highlight}"><h2>{m}</h2><ul>{items}</ul></div>'
             )
         else:
             month_cards.append(
-                f'<div class="month-card"><h2>{m}</h2><p>No events listed.</p></div>'
+                f'<div class="month-card{highlight}"><h2>{m}</h2><p>No events listed.</p></div>'
             )
+
 
     sections = "".join(month_cards)  # <- no whitespace nodes
 
