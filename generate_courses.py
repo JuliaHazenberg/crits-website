@@ -237,7 +237,7 @@ if os.path.exists(EVENTS_JSON):
       padding: 0 1rem;
     }}
 
-    .calendar-grid {
+.calendar-grid {{
       display: grid;
       grid-template-columns: repeat(4, 1fr);  /* Always 4 columns */;
       gap: 1.5rem;
