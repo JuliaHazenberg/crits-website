@@ -186,9 +186,38 @@ footer {
     background-color: #ffffff;
     border-bottom: 1px solid #ddd;
     display: flex;
-    align-items: center;
+    justify-content: center;      /* center horizontally */
+    align-items: center;          /* center vertically */
     gap: 1rem;
-    font-size: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
     color: #004c3f;
+    box-shadow: 0 2px 8px rgba(0, 76, 63, 0.1); /* subtle shadow */
+    border-radius: 8px 8px 0 0;
+    max-width: 600px;             /* optional max width */
+    margin: 0 auto 1rem auto;     /* center horizontally with margin bottom */
+}
+
+.filter-bar label {
+    margin-right: 0.5rem;
+    user-select: none;
+}
+
+.filter-bar select {
+    padding: 0.4rem 0.8rem;
+    font-size: 1rem;
+    border: 1px solid #004c3f;
+    border-radius: 6px;
+    background: white;
+    color: #004c3f;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+    min-width: 140px;
+}
+
+.filter-bar select:hover,
+.filter-bar select:focus {
+    outline: none;
+    box-shadow: 0 0 8px #004c3f;
 }
 
