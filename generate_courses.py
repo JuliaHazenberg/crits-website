@@ -1,356 +1,261 @@
 import os
 import re
-from templates import details_template, frontcard_template
 import json
-from collections import defaultdict
-from datetime import datetime
 import gpxpy
 import folium
+from datetime import datetime
+from collections import defaultdict
+from templates import details_template, frontcard_template
 
-# Paths
-BASE_DIR = os.path.dirname(__file__)
-GPX_DIR = os.path.join(BASE_DIR, "gpx_files")
-OUTPUT_DIR = os.path.join(BASE_DIR, "courses")
-INDEX_HTML = os.path.join(BASE_DIR, "index.html")
+# ---- CONFIG ----
+BASE_DIR      = os.path.dirname(__file__)
+GPX_DIR       = os.path.join(BASE_DIR, "gpx_files")
+OUTPUT_DIR    = os.path.join(BASE_DIR, "courses")
+INDEX_HTML    = os.path.join(BASE_DIR, "index.html")
 CALENDAR_HTML = os.path.join(BASE_DIR, "calendar.html")
-EVENTS_JSON = os.path.join(BASE_DIR, "data", "events.json")
-EVENT_MAP_HTML = os.path.join(BASE_DIR, "event_map.html")
+EVENT_MAP_HTML= os.path.join(BASE_DIR, "event_map.html")
+EVENTS_JSON   = os.path.join(BASE_DIR, "data", "events.json")
 
-# Ensure output directory exists
+# ensure output
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# Pattern: e.g., "elmhurst_crit_2024.gpx"
+# gpx filename pattern
 pattern = re.compile(r"(?P<critname>.+?)_crit_(?P<year>\d{4})\.gpx")
 
-# Store course info for index.html
-course_info_list = []
+# helpers
+def fix_case(raw):
+    special = {"ToAD","CBR"}
+    return " ".join(w if w in special else w.capitalize() for w in raw.replace("_"," ").split())
+
+def get_start_point(path):
+    with open(path, encoding="utf-8") as f:
+        g = gpxpy.parse(f)
+    if g.tracks and g.tracks[0].segments[0].points:
+        p = g.tracks[0].segments[0].points[0]
+        return p.latitude, p.longitude
+    if g.routes and g.routes[0].points:
+        p = g.routes[0].points[0]
+        return p.latitude, p.longitude
+    return None
+
+# collect everything
+course_info = []
 states = set()
-crit_locations = []  # For event map markers
+crit_locations = []
 
-def fix_case(critname_raw):
-    special_case_words = ['ToAD', 'CBR']
-    critname = ' '.join(
-        word if word in special_case_words else word.capitalize()
-        for word in critname_raw.replace('_', ' ').split()
-    )
-    return critname
-
-def get_start_point(gpx_path):
-    with open(gpx_path, encoding="utf-8") as gpx_file:
-        gpx = gpxpy.parse(gpx_file)
-    if gpx.tracks and gpx.tracks[0].segments and gpx.tracks[0].segments[0].points:
-        first_point = gpx.tracks[0].segments[0].points[0]
-        return (first_point.latitude, first_point.longitude)
-    elif gpx.routes and gpx.routes[0].points:
-        first_point = gpx.routes[0].points[0]
-        return (first_point.latitude, first_point.longitude)
-    else:
-        return None
-
-# Process all GPX files
-for filename in os.listdir(GPX_DIR):
-    if not filename.endswith(".gpx"):
+for fn in os.listdir(GPX_DIR):
+    if not fn.endswith(".gpx"): continue
+    m = pattern.match(fn)
+    if not m:
+        print("Skipping invalid:", fn)
         continue
 
-    match = pattern.match(filename)
-    if not match:
-        print(f"Skipping invalid filename: {filename}")
-        continue
+    raw, year = m.group("critname"), m.group("year")
+    nice = fix_case(raw)
+    folder = f"{raw}_{year}"
+    gp = os.path.join(GPX_DIR, fn)
+    od = os.path.join(OUTPUT_DIR, folder)
+    os.makedirs(od, exist_ok=True)
 
-    critname_raw = match.group("critname")
-    year = match.group("year")
-    critname = fix_case(critname_raw)
+    # generate details + frontcard
+    details_template.process_course(gpx_path=gp, output_dir=od, critname=raw, year=year)
+    frontcard_template.process_frontcard(gpx_path=gp, output_dir=od, critname=raw, year=year)
 
-    folder_name = f"{critname_raw}_{year}"
-    gpx_path = os.path.join(GPX_DIR, filename)
-    output_subdir = os.path.join(OUTPUT_DIR, folder_name)
+    # load stats for state
+    with open(os.path.join(od, f"{raw}_crit_{year}_stats.json"), encoding="utf-8") as sf:
+        st = json.load(sf).get("State","Unknown").replace(" ","_")
+    states.add(st)
 
-    print(f"Processing: {folder_name}")
-    os.makedirs(output_subdir, exist_ok=True)
-
-    # Process details and front card templates (existing code)
-    details_template.process_course(
-        gpx_path=gpx_path,
-        output_dir=output_subdir,
-        critname=critname_raw,
-        year=year
-    )
-
-    frontcard_template.process_frontcard(
-        gpx_path=gpx_path,
-        output_dir=output_subdir,
-        critname=critname_raw,
-        year=year
-    )
-
-    # Load stats to get state info
-    stats_path = os.path.join(output_subdir, f"{critname_raw}_crit_{year}_stats.json")
-    with open(stats_path, encoding="utf-8") as stats_file:
-        stats = json.load(stats_file)
-        state = stats.get("State", "Unknown").replace(" ", "_")
-        states.add(state)
-
-    # Extract start coordinates for event map
-    start_coords = get_start_point(gpx_path)
-    if start_coords:
+    # grab start for event map
+    sp = get_start_point(gp)
+    if sp:
         crit_locations.append({
-            "name": critname,
+            "name": nice,
             "year": year,
-            "lat": start_coords[0],
-            "lon": start_coords[1],
-            "folder": folder_name,
-            "critname_raw": critname_raw,
+            "lat": sp[0],
+            "lon": sp[1],
+            "folder": folder,
+            "raw": raw
         })
 
-    course_info_list.append({
-        "folder_name": folder_name,
-        "critname": critname,
-        "critname_raw": critname_raw,
+    course_info.append({
+        "folder": folder,
+        "nice": nice,
+        "raw": raw,
         "year": year,
-        "state": state,
+        "state": st
     })
 
-# Sort and generate index.html with updated nav including Event Map tab
-course_info_list.sort(key=lambda x: x["critname"].lower())
+# sort
+course_info.sort(key=lambda c: c["nice"].lower())
 
-course_cards = []
-for c in course_info_list:
-    course_cards.append(f"""
-<a href="courses/{c['folder_name']}/{c['critname_raw']}_crit_{c['year']}_details.html" class="course-card" data-state="{c['state']}">
-<div class="card-header">
-  <h3 class="card-title">{c['critname']} Crit</h3>
-  <p class="card-year">{c['year']}</p>
-</div>
-<div class="card-map">
-  <iframe src="courses/{c['folder_name']}/{c['critname_raw']}_crit_{c['year']}_frontcard.html" loading="lazy"></iframe>
-</div>
-</a>
-""")
+# --- INDEX.HTML ---
+cards = []
+for c in course_info:
+    cards.append(f"""
+    <a href="courses/{c['folder']}/{c['raw']}_crit_{c['year']}_details.html"
+       class="course-card" data-state="{c['state']}">
+      <div class="card-header">
+        <h3 class="card-title">{c['nice']} Crit</h3>
+        <p class="card-year">{c['year']}</p>
+      </div>
+      <div class="card-map">
+        <iframe src="courses/{c['folder']}/{c['raw']}_crit_{c['year']}_frontcard.html"
+                loading="lazy"></iframe>
+      </div>
+    </a>
+    """)
 
 with open(INDEX_HTML, "w", encoding="utf-8") as f:
     f.write(f"""<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Crit Courses</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .filter-bar {{
-      margin: 1rem;
-      text-align: center;
-    }}
-    .filter-bar select {{
-      padding: 0.5rem;
-      font-size: 1rem;
-    }}
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
     <h1>Crit Courses</h1>
-    <nav style="text-align: center; margin-bottom: 1rem;">
-      <a href="index.html">Courses</a> |
-      <a href="calendar.html">Event Calendar</a> |
+    <nav>
+      <a href="index.html">Courses</a>
+      <a href="calendar.html">Event Calendar</a>
       <a href="event_map.html">Event Map</a>
     </nav>
   </header>
 
   <div class="filter-bar">
-    <label for="stateFilter">Filter by State:</label>
+    <label>Filter by State:</label>
     <select id="stateFilter">
-      <option value="all">All States</option>
-      {''.join(f'<option value="{s}">{s.replace("_", " ")}</option>' for s in sorted(states))}
+      <option value="all">All</option>
+      {''.join(f'<option value="{s}">{s.replace("_"," ")}</option>' for s in sorted(states))}
     </select>
   </div>
 
   <main class="card-container">
-    {''.join(course_cards)}
+    {''.join(cards)}
   </main>
 
   <script>
-    const select = document.getElementById('stateFilter');
-    const cards = document.querySelectorAll('.course-card');
-
-    select.addEventListener('change', () => {{
-      const selected = select.value;
-      cards.forEach(card => {{
-        if (selected === 'all' || card.dataset.state === selected) {{
-          card.style.display = '';
-        }} else {{
-          card.style.display = 'none';
-        }}
+    document.getElementById('stateFilter').addEventListener('change', e => {{
+      const sel = e.target.value;
+      document.querySelectorAll('.course-card').forEach(c => {{
+        c.style.display = sel==='all' || c.dataset.state===sel ? '' : 'none';
       }});
     }});
   </script>
-  <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
-    © 2025 Julia Hazenberg. All rights reserved.
-  </footer>
 </body>
 </html>""")
 
-print("✅ index.html generated.")
+print("✅ index.html generated")
 
-# --- CALENDAR GENERATION -----------------------------------------------
-if os.path.exists(EVENTS_JSON):
-    with open(EVENTS_JSON, encoding="utf-8") as f:
-        try:
-            events = json.load(f)
-        except json.JSONDecodeError as e:
-            print(f"❌ Error loading events.json: {e}")
-            events = []
+# --- CALENDAR.HTML ---
+# load events.json
+events = json.load(open(EVENTS_JSON, encoding="utf-8")) if os.path.exists(EVENTS_JSON) else []
+by_month = defaultdict(list)
+all_states_cal = set()
+for e in events:
+    by_month[e["date"]].append(e)
+    all_states_cal.add(e.get("state","Unknown").replace(" ","_"))
 
-    # group events by month
-    events_by_month = defaultdict(list)
-    all_states = set()
-    for e in events:
-        month = e["date"]
-        state = e.get("state", "Unknown").replace(" ", "_")
-        all_states.add(state)
-        events_by_month[month].append({
-            "critname": e["critname"],
-            "state": state
-        })
+month_order = ["January","February","March","April","May","June",
+               "July","August","September","October","November","December"]
+today_month = datetime.now().strftime("%B")
 
-    month_order = ["January","February","March","April","May","June",
-                   "July","August","September","October","November","December"]
+month_cards = []
+for m in month_order:
+    highlight = " current-month" if m==today_month else ""
+    items = by_month.get(m, [])
+    if items:
+        lis = "".join(
+            f'<li data-state="{ev.get("state","Unknown")}">{ev["critname"]}</li>'
+            for ev in sorted(items, key=lambda x: x["critname"])
+        )
+        month_cards.append(f'<div class="month-card{highlight}"><h2>{m}</h2><ul>{lis}</ul></div>')
+    else:
+        month_cards.append(f'<div class="month-card{highlight}"><h2>{m}</h2><p>No events</p></div>')
 
-    # Get current month as string (e.g., "June")
-    current_month_name = datetime.now().strftime("%B")
-
-    month_cards = []
-    for m in month_order:
-        highlight = " current-month" if m == current_month_name else ""
-        if m in events_by_month:
-            items = "".join(
-                f'<li data-state="{ev["state"]}">{ev["critname"]}</li>'
-                for ev in sorted(events_by_month[m], key=lambda x: x["critname"])
-            )
-            month_cards.append(
-                f'<div class="month-card{highlight}"><h2>{m}</h2><ul>{items}</ul></div>'
-            )
-        else:
-            # No events this month, still show empty month with placeholder
-            month_cards.append(
-                f'<div class="month-card{highlight}"><h2>{m}</h2><p> </p></div>'
-            )
-
-    sections = "".join(month_cards)  # no extra whitespace
-
-    calendar_html = f"""<!DOCTYPE html>
+with open(CALENDAR_HTML, "w", encoding="utf-8") as f:
+    f.write(f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Crit Event Calendar</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .filter-bar {{
-      margin: 1rem;
-      text-align: center;
-    }}
-    .filter-bar select {{
-      padding: 0.5rem;
-      font-size: 1rem;
-    }}
-  </style>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Event Calendar</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
     <h1>Event Calendar</h1>
-    <nav style="text-align: center; margin-bottom: 1rem;">
-      <a href="index.html">Courses</a> |
-      <a href="calendar.html">Event Calendar</a> |
+    <nav>
+      <a href="index.html">Courses</a>
+      <a href="calendar.html">Event Calendar</a>
       <a href="event_map.html">Event Map</a>
     </nav>
   </header>
 
   <div class="filter-bar">
-    <label for="calendarStateFilter">Filter by State:</label>
-    <select id="calendarStateFilter">
-      <option value="all">All States</option>
-      {''.join(f'<option value="{s}">{s.replace("_", " ")}</option>' for s in sorted(all_states))}
+    <label>Filter by State:</label>
+    <select id="calStateFilter">
+      <option value="all">All</option>
+      {''.join(f'<option value="{s}">{s.replace("_"," ")}</option>' for s in sorted(all_states_cal))}
     </select>
   </div>
 
-  <main><div class="calendar-grid">{sections}</div></main>
+  <main><div class="calendar-grid">
+    {''.join(month_cards)}
+  </div></main>
 
   <script>
-    const calendarSelect = document.getElementById('calendarStateFilter');
-    const monthCards = document.querySelectorAll('.month-card');
-
-    calendarSelect.addEventListener('change', () => {{
-      const selected = calendarSelect.value;
-      monthCards.forEach(monthCard => {{
-        const items = monthCard.querySelectorAll('li');
-        items.forEach(item => {{
-          if (selected === 'all' || item.dataset.state === selected) {{
-            item.style.display = '';
-          }} else {{
-            item.style.display = 'none';
-          }}
+    document.getElementById('calStateFilter').addEventListener('change', e => {{
+      const sel = e.target.value;
+      document.querySelectorAll('.month-card').forEach(mc => {{
+        mc.querySelectorAll('li').forEach(li => {{
+          li.style.display = sel==='all' || li.dataset.state===sel ? '' : 'none';
         }});
-        // Note: do NOT hide month card itself, so all months remain visible
       }});
     }});
   </script>
-
-  <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
-    © 2025 Julia Hazenberg. All rights reserved.
-  </footer>
 </body>
-</html>"""
+</html>""")
 
-    with open(CALENDAR_HTML, "w", encoding="utf-8") as f:
-        f.write(calendar_html)
+print("✅ calendar.html generated")
 
-    print("✅ calendar.html generated.")
-else:
-    print("⚠️ events.json not found — skipping calendar generation.")
+# --- EVENT_MAP.HTML ---
+m = folium.Map(location=[39.5,-98.35], zoom_start=4, tiles="OpenStreetMap")
+for loc in crit_locations:
+    folium.Marker(
+        [loc["lat"], loc["lon"]],
+        popup=(f'<a href="courses/{loc["folder"]}/{loc["raw"]}_crit_{loc["year"]}_details.html" '
+               f'target="_blank">{loc["name"]} {loc["year"]}</a>'),
+        icon=folium.Icon(color="blue", icon="bicycle", prefix="fa")
+    ).add_to(m)
 
-# --- EVENT MAP GENERATION -----------------------------------------------
-if crit_locations:
-    # Center map on US roughly
-    m = folium.Map(location=[39.5, -98.35], zoom_start=4, tiles="OpenStreetMap")
-
-    for crit in crit_locations:
-        popup_html = f'<a href="courses/{crit["folder"]}/{crit["critname_raw"]}_crit_{crit["year"]}_details.html" target="_blank">{crit["name"]} {crit["year"]}</a>'
-        folium.Marker(
-            location=[crit["lat"], crit["lon"]],
-            popup=popup_html,
-            icon=folium.Icon(color="blue", icon="bicycle", prefix='fa')
-        ).add_to(m)
-
-        event_map_html = f"""<!DOCTYPE html>
+map_html = m.get_root().render()
+with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
+    f.write(f"""<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Event Map</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
     <h1>Event Map</h1>
-    <nav style="text-align: center; margin-bottom: 1rem;">
-      <a href="index.html">Courses</a> |
-      <a href="calendar.html">Event Calendar</a> |
+    <nav>
+      <a href="index.html">Courses</a>
+      <a href="calendar.html">Event Calendar</a>
       <a href="event_map.html">Event Map</a>
     </nav>
   </header>
 
-  <main style="width: 90%; margin: 0 auto;">
-    {event_map_html}
+  <main style="padding:1rem;">
+    {map_html}
   </main>
-
-  <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
-    © 2025 Julia Hazenberg. All rights reserved.
-  </footer>
 </body>
-</html>"""
+</html>""")
 
-    with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
-        f.write(event_map_html)
-    print(f"✅ event_map.html written to {EVENT_MAP_HTML}")
-else:
-    print("⚠️ No crit locations found — skipping event map.")
+print("✅ event_map.html generated")
