@@ -325,3 +325,4 @@ else:
 
 # --- EVENT MAP GENERATION -----------------------------------------------
 generate_event_map(crit_locations, EVENT_MAP_HTML)
+print(f"Number of crit locations to map: {len(crit_locations)}")
