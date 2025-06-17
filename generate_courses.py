@@ -321,11 +321,7 @@ if crit_locations:
             icon=folium.Icon(color="blue", icon="bicycle", prefix='fa')
         ).add_to(m)
 
-    # Save the raw map to a temporary HTML string
-    event_map_html = m.get_root().render()
-
-    with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
-        f.write(f"""<!DOCTYPE html>
+        event_map_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -351,7 +347,10 @@ if crit_locations:
     © 2025 Julia Hazenberg. All rights reserved.
   </footer>
 </body>
-</html>""")
+</html>"""
+
+    with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
+        f.write(event_map_html)
     print(f"✅ event_map.html written to {EVENT_MAP_HTML}")
 else:
     print("⚠️ No crit locations found — skipping event map.")
