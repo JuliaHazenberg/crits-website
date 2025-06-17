@@ -176,22 +176,20 @@ if os.path.exists(EVENTS_JSON):
     month_order = ["January","February","March","April","May","June",
                    "July","August","September","October","November","December"]
 
-    # build responsive month‑cards
-    sections = ""
+    # build month‑cards (NO leading new‑lines / spaces!)
+    month_cards = []
     for m in month_order:
         if m in events_by_month:
             items = "".join(f"<li>{ev}</li>" for ev in sorted(events_by_month[m]))
-            sections += f"""
-            <div class="month-card">
-              <h2>{m}</h2>
-              <ul>{items}</ul>
-            </div>"""
+            month_cards.append(
+                f'<div class="month-card"><h2>{m}</h2><ul>{items}</ul></div>'
+            )
         else:
-            sections += f"""
-            <div class="month-card">
-              <h2>{m}</h2>
-              <p>No events listed.</p>
-            </div>"""
+            month_cards.append(
+                f'<div class="month-card"><h2>{m}</h2><p>No events listed.</p></div>'
+            )
+
+    sections = "".join(month_cards)  # <- no whitespace nodes
 
     # final HTML (brace‑escaped)
     calendar_html = f"""<!DOCTYPE html>
@@ -204,25 +202,30 @@ if os.path.exists(EVENTS_JSON):
   <style>
     body {{
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f5f5f5;
-      color: #333;
-      margin: 0;
+      background:#f5f5f5; color:#333; margin:0;
     }}
     header {{
-      background:#004c3f; color:#fff; padding:1.5rem 1rem;
+      background:#004c3f; color:#fff; padding:1.6rem 1rem;
       text-align:center; box-shadow:0 4px 10px rgba(0,0,0,.15);
     }}
     header h1 {{ font-size:3.5rem; margin:0 0 .5rem; }}
     nav a {{ color:#fff; margin:0 1rem; font-weight:600; text-decoration:none; }}
     nav a:hover {{ text-decoration:underline; }}
+
     main {{ max-width:1200px; margin:2rem auto; padding:0 1rem; }}
+
+    /* responsive 4‑col grid that collapses nicely */
     .calendar-grid {{
-      display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
       gap:1.5rem;
     }}
+
     .month-card {{
-      background:#fff; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,.08);
-      padding:1.5rem; min-height:200px; transition:transform .2s;
+      background:#fff; border-radius:12px;
+      box-shadow:0 4px 12px rgba(0,0,0,.08);
+      padding:1.5rem; min-height:200px;
+      transition:transform .2s;
     }}
     .month-card:hover {{ transform:translateY(-4px); }}
     .month-card h2 {{ font-size:1.5rem; color:#004c3f; margin:0 0 1rem; text-align:center; }}
@@ -247,6 +250,7 @@ if os.path.exists(EVENTS_JSON):
 
     with open(CALENDAR_HTML, "w", encoding="utf-8") as f:
         f.write(calendar_html)
+
     print("✅ calendar.html generated.")
 else:
     print("⚠️ events.json not found — skipping calendar generation.")
