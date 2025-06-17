@@ -47,21 +47,6 @@ def get_start_point(gpx_path):
     else:
         return None
 
-def generate_event_map(crit_locations, output_path):
-    # Center map on US roughly
-    m = folium.Map(location=[39.5, -98.35], zoom_start=4, tiles="OpenStreetMap")
-
-    for crit in crit_locations:
-        popup_html = f'<a href="courses/{crit["folder"]}/{crit["critname_raw"]}_crit_{crit["year"]}_details.html" target="_blank">{crit["name"]} {crit["year"]}</a>'
-        folium.Marker(
-            location=[crit["lat"], crit["lon"]],
-            popup=popup_html,
-            icon=folium.Icon(color="blue", icon="bicycle", prefix='fa')
-        ).add_to(m)
-
-    m.save(output_path)
-    print(f"✅ Event map saved to {output_path}")
-
 # Process all GPX files
 for filename in os.listdir(GPX_DIR):
     if not filename.endswith(".gpx"):
@@ -324,5 +309,49 @@ else:
     print("⚠️ events.json not found — skipping calendar generation.")
 
 # --- EVENT MAP GENERATION -----------------------------------------------
-generate_event_map(crit_locations, EVENT_MAP_HTML)
-print(f"Event map will save to: {EVENT_MAP_HTML}")
+if crit_locations:
+    # Center map on US roughly
+    m = folium.Map(location=[39.5, -98.35], zoom_start=4, tiles="OpenStreetMap")
+
+    for crit in crit_locations:
+        popup_html = f'<a href="courses/{crit["folder"]}/{crit["critname_raw"]}_crit_{crit["year"]}_details.html" target="_blank">{crit["name"]} {crit["year"]}</a>'
+        folium.Marker(
+            location=[crit["lat"], crit["lon"]],
+            popup=popup_html,
+            icon=folium.Icon(color="blue", icon="bicycle", prefix='fa')
+        ).add_to(m)
+
+    # Save the raw map to a temporary HTML string
+    event_map_html = m.get_root().render()
+
+    with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
+        f.write(f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Event Map</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Event Map</h1>
+    <nav style="text-align: center; margin-bottom: 1rem;">
+      <a href="index.html">Courses</a> |
+      <a href="calendar.html">Event Calendar</a> |
+      <a href="event_map.html">Event Map</a>
+    </nav>
+  </header>
+
+  <main style="width: 90%; margin: 0 auto;">
+    {event_map_html}
+  </main>
+
+  <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
+    © 2025 Julia Hazenberg. All rights reserved.
+  </footer>
+</body>
+</html>""")
+    print(f"✅ event_map.html written to {EVENT_MAP_HTML}")
+else:
+    print("⚠️ No crit locations found — skipping event map.")
