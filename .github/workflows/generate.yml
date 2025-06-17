@@ -42,9 +42,9 @@ jobs:
       - name: Commit and push generated files
         run: |
           echo "Adding files..."
-          git add courses/ index.html calendar.html || echo "Nothing to add"
+          git add courses/ index.html calendar.html event_map.html|| echo "Nothing to add"
           git status
-          git commit -m "Auto-generated courses, index, and calendar" || echo "No changes to commit"
+          git commit -m "Auto-generated courses, index, calendar and map" || echo "No changes to commit"
           echo "Pushing changes..."
           git push origin HEAD:main
 
