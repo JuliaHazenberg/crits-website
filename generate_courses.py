@@ -171,8 +171,15 @@ if os.path.exists(EVENTS_JSON):
 
     # group by month
     events_by_month = defaultdict(list)
+    all_states = set()
     for e in events:
-        events_by_month[e["date"]].append(e["critname"])
+        month = e["date"]
+        state = e.get("state", "Unknown").replace(" ", "_")
+        all_states.add(state)
+        events_by_month[month].append({
+            "critname": e["critname"],
+            "state": state
+        })
 
     month_order = ["January","February","March","April","May","June",
                    "July","August","September","October","November","December"]
