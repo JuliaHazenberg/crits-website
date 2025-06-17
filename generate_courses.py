@@ -171,11 +171,11 @@ if os.path.exists(EVENTS_JSON):
 
     # group by month
     events_by_month = defaultdict(list)
-    all_states = set()
+    all_states = set()  # *** UPDATED ***
     for e in events:
         month = e["date"]
         state = e.get("state", "Unknown").replace(" ", "_")
-        all_states.add(state)
+        all_states.add(state)  # *** UPDATED ***
         events_by_month[month].append({
             "critname": e["critname"],
             "state": state
@@ -196,7 +196,6 @@ if os.path.exists(EVENTS_JSON):
                 f'<li data-state="{ev["state"]}">{ev["critname"]}</li>' 
                 for ev in sorted(events_by_month[m], key=lambda x: x["critname"])
             )
-
             month_cards.append(
                 f'<div class="month-card{highlight}"><h2>{m}</h2><ul>{items}</ul></div>'
             )
@@ -205,12 +204,9 @@ if os.path.exists(EVENTS_JSON):
                 f'<div class="month-card{highlight}"><h2>{m}</h2><p> </p></div>'
             )
 
-
     sections = "".join(month_cards)  # <- no whitespace nodes
 
-    # final HTML (brace‑escaped)
-    # final HTML (brace‑escaped)
-    
+    # final calendar HTML with filter UI and JS - *** UPDATED ***
     calendar_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -218,6 +214,16 @@ if os.path.exists(EVENTS_JSON):
   <title>Crit Event Calendar</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .filter-bar {{
+      margin: 1rem;
+      text-align: center;
+    }}
+    .filter-bar select {{
+      padding: 0.5rem;
+      font-size: 1rem;
+    }}
+  </style>
 </head>
 <body>
   <header>
@@ -225,7 +231,39 @@ if os.path.exists(EVENTS_JSON):
     <nav><a href="index.html">Courses</a> | <a href="calendar.html">Event Calendar</a></nav>
   </header>
 
+  <div class="filter-bar"> <!-- *** UPDATED *** -->
+    <label for="calendarStateFilter">Filter by State:</label>
+    <select id="calendarStateFilter">
+      <option value="all">All States</option>
+      {''.join(f'<option value="{s}">{s.replace("_", " ")}</option>' for s in sorted(all_states))}
+    </select>
+  </div>
+
   <main><div class="calendar-grid">{sections}</div></main>
+
+  <script>  <!-- *** UPDATED *** -->
+    const calendarSelect = document.getElementById('calendarStateFilter');
+    const monthCards = document.querySelectorAll('.month-card');
+
+    calendarSelect.addEventListener('change', () => {{
+      const selected = calendarSelect.value;
+      monthCards.forEach(monthCard => {{
+        // Get all <li> inside this monthCard
+        const items = monthCard.querySelectorAll('li');
+        let anyVisible = false;
+        items.forEach(item => {{
+          if (selected === 'all' || item.dataset.state === selected) {{
+            item.style.display = '';
+            anyVisible = true;
+          }} else {{
+            item.style.display = 'none';
+          }}
+        }});
+        // If no items visible, hide the entire monthCard
+        monthCard.style.display = anyVisible ? '' : 'none';
+      }});
+    }});
+  </script>
 
   <footer>© 2025 Julia Hazenberg. All rights reserved.</footer>
 </body>
