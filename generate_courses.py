@@ -183,9 +183,17 @@ if os.path.exists(EVENTS_JSON):
     for month in month_order:
         if month in events_by_month:
             items = "".join(f"<li>{event}</li>" for event in sorted(events_by_month[month]))
-            sections += f"<section><h2>{month}</h2><ul>{items}</ul></section>"
+            sections += f"""
+            <div class="month-card">
+              <h2>{month}</h2>
+              <ul>{items}</ul>
+            </div>"""
         else:
-            sections += f"<section><h2>{month}</h2><p>No events listed.</p></section>"
+            sections += f"""
+            <div class="month-card">
+              <h2>{month}</h2>
+              <p>No events listed.</p>
+            </div>"""
 
     calendar_html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -295,25 +303,11 @@ if os.path.exists(EVENTS_JSON):
     </nav>
   </header>
 
-  <main>
-    <div class="calendar-grid">
-      <!-- Injected month cards here -->
-      <!-- Example card -->
-      <div class="month-card">
-        <h2>January</h2>
-        <p>No events listed.</p>
-      </div>
-      <div class="month-card">
-        <h2>February</h2>
-        <ul><li>Example Crit</li></ul>
-      </div>
-      <div class="month-card">
-        <h2>March</h2>
-        <p>No events listed.</p>
-      </div>
-      <!-- etc... (this is filled dynamically by your Python script) -->
-    </div>
-  </main>
+<main>
+  <div class="calendar-grid">
+    {sections}
+  </div>
+</main>
 
   <footer>
     © 2025 Julia Hazenberg. All rights reserved.
