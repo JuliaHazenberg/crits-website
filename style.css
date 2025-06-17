@@ -24,21 +24,54 @@ header {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
+/* NAVIGATION BUTTONS */
+nav {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+nav a {
+    display: inline-block;
+    margin: 0 12px;
+    padding: 10px 24px;
+    background-color: #007a5e;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    user-select: none;
+}
+
+nav a:hover,
+nav a:focus {
+    background-color: #00573d;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.18);
+    outline: none;
+}
+
+nav a:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+/* FRONT PAGE – CARD GRID */
 .card-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 2rem;
     padding: 2rem;
-
-    /* Make main content take available vertical space */
     flex: 1 0 auto;
 }
 
-/* Main course card layout */
+/* FRONT PAGE – SINGLE COURSE CARD */
 .course-card {
     display: flex;
     flex-direction: column;
-    height: 340px;  /* Total height of each course card */
+    height: 340px;
     background-color: white;
     border-radius: 20px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
@@ -53,7 +86,6 @@ header {
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* Header (title + year) */
 .card-header {
     flex: 0 0 auto;
     background-color: white;
@@ -79,7 +111,6 @@ header {
     margin: 0.2rem 0 0 0;
 }
 
-/* Map area */
 .card-map {
     flex: 1 1 auto;
     min-height: 180px;
@@ -94,7 +125,7 @@ header {
     border-bottom-right-radius: 20px;
 }
 
-/* Footer styles */
+/* FOOTER */
 footer {
     flex-shrink: 0;
     text-align: center;
@@ -105,44 +136,36 @@ footer {
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Navigation buttons styling */
-nav {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-nav a {
-  display: inline-block;
-  margin: 0 12px;
-  padding: 10px 24px;
-  background-color: #007a5e;   /* A nice green complementing header */
-  color: white;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  user-select: none;
-}
-
-nav a:hover,
-nav a:focus {
-  background-color: #00573d;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.18);
-  outline: none;
-}
-
-nav a:active {
-  transform: translateY(0);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
-}
-
-/* CALENDAR GRID – bottom of style.css */
+/* CALENDAR PAGE – GRID OF MONTHS */
 .calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
 }
 
+/* CALENDAR PAGE – INDIVIDUAL MONTH CARD */
+.month-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    min-height: 200px;
+    transition: transform 0.2s;
+}
+
+.month-card:hover {
+    transform: translateY(-4px);
+}
+
+.month-card h2 {
+    font-size: 1.5rem;
+    color: #004c3f;
+    margin: 0 0 1rem;
+    text-align: center;
+}
+
+.month-card ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    line-height: 1.5;
+}
