@@ -1,12 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Event Map</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-                #map_9142a026dcb0f867e7b47eb8f9b76e72 {
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_02b29a3c34628ce90ad7c4694838843d {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -14,13 +25,17 @@
                     top: 0.0%;
                 }
                 .leaflet-container { font-size: 1rem; }
-            </style><style>html, body {
+            </style>
+
+            <style>html, body {
                 width: 100%;
                 height: 100%;
                 margin: 0;
                 padding: 0;
             }
-            </style><style>#map {
+            </style>
+
+            <style>#map {
                 position:absolute;
                 top:0;
                 bottom:0;
@@ -28,31 +43,25 @@
                 left:0;
                 }
             </style>
-</head>
-<body>
-  <header>
-    <h1>Event Map</h1>
-    <nav>
-      <a href="index.html">Courses</a>
-      <a href="calendar.html">Event Calendar</a>
-      <a href="event_map.html">Event Map</a>
-    </nav>
-  </header>
-  
-  <main>
-    <div class="map-wrapper">
-      <div class="folium-map" id="map_9142a026dcb0f867e7b47eb8f9b76e72"></div>
-    </div>
-  </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script><script src="https://code.jquery.com/jquery-3.7.1.min.js"></script><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script><script>
+            <script>
                 L_NO_TOUCH = false;
                 L_DISABLE_3D = false;
-            </script><script>
+            </script>
+
+        
+</head>
+<body>
     
     
-            var map_9142a026dcb0f867e7b47eb8f9b76e72 = L.map(
-                "map_9142a026dcb0f867e7b47eb8f9b76e72",
+            <div class="folium-map" id="map_02b29a3c34628ce90ad7c4694838843d" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_02b29a3c34628ce90ad7c4694838843d = L.map(
+                "map_02b29a3c34628ce90ad7c4694838843d",
                 {
                     center: [39.5, -98.35],
                     crs: L.CRS.EPSG3857,
@@ -69,7 +78,7 @@
 
         
     
-            var tile_layer_1e9fd38d2a815866ecd281ec1e960779 = L.tileLayer(
+            var tile_layer_1b85be28903d96cd0683d7941c41a093 = L.tileLayer(
                 "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {
   "minZoom": 0,
@@ -86,17 +95,17 @@
             );
         
     
-            tile_layer_1e9fd38d2a815866ecd281ec1e960779.addTo(map_9142a026dcb0f867e7b47eb8f9b76e72);
+            tile_layer_1b85be28903d96cd0683d7941c41a093.addTo(map_02b29a3c34628ce90ad7c4694838843d);
         
     
-            var marker_ddd5af8ed9293be66386601de657eedc = L.marker(
+            var marker_9d825c15b3638250b1b9d8e2f8ea2bf3 = L.marker(
                 [41.10691, -87.858818],
                 {
 }
-            ).addTo(map_9142a026dcb0f867e7b47eb8f9b76e72);
+            ).addTo(map_02b29a3c34628ce90ad7c4694838843d);
         
     
-            var icon_8c62c2ee79b4586672b9593d7569edd6 = L.AwesomeMarkers.icon(
+            var icon_9cff4645b1406ea980b7994c56fd1c56 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -107,34 +116,34 @@
             );
         
     
-        var popup_aa8e3a8fd62af10914f73bc093d7c2d4 = L.popup({
+        var popup_0920efc6a9c9b3984c6dd595dd9f4277 = L.popup({
   "maxWidth": "100%",
 });
 
         
             
-                var html_908881e763d0103b30dcd8a6b87e8302 = $(`<div id="html_908881e763d0103b30dcd8a6b87e8302" style="width: 100.0%; height: 100.0%;">Cobb Park 2025</div>`)[0];
-                popup_aa8e3a8fd62af10914f73bc093d7c2d4.setContent(html_908881e763d0103b30dcd8a6b87e8302);
+                var html_c0b5177812f1626df31b7c7580d9d6ef = $(`<div id="html_c0b5177812f1626df31b7c7580d9d6ef" style="width: 100.0%; height: 100.0%;">Cobb Park 2025</div>`)[0];
+                popup_0920efc6a9c9b3984c6dd595dd9f4277.setContent(html_c0b5177812f1626df31b7c7580d9d6ef);
             
         
 
-        marker_ddd5af8ed9293be66386601de657eedc.bindPopup(popup_aa8e3a8fd62af10914f73bc093d7c2d4)
+        marker_9d825c15b3638250b1b9d8e2f8ea2bf3.bindPopup(popup_0920efc6a9c9b3984c6dd595dd9f4277)
         ;
 
         
     
     
-                marker_ddd5af8ed9293be66386601de657eedc.setIcon(icon_8c62c2ee79b4586672b9593d7569edd6);
+                marker_9d825c15b3638250b1b9d8e2f8ea2bf3.setIcon(icon_9cff4645b1406ea980b7994c56fd1c56);
             
     
-            var marker_b231ee7a81e01a2a33a68751a10a8d5a = L.marker(
+            var marker_b333511db98185207ec9cbd584cffe9e = L.marker(
                 [42.68182, -89.025902],
                 {
 }
-            ).addTo(map_9142a026dcb0f867e7b47eb8f9b76e72);
+            ).addTo(map_02b29a3c34628ce90ad7c4694838843d);
         
     
-            var icon_8060fc1238c252546264d07ec5e4fe51 = L.AwesomeMarkers.icon(
+            var icon_6a3debc2e8bcc959d298669b26a30293 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -145,34 +154,34 @@
             );
         
     
-        var popup_e77b1cb568edd3ede091f44d739395a5 = L.popup({
+        var popup_15b7aeb64cc95c2bf48e814ccf431c41 = L.popup({
   "maxWidth": "100%",
 });
 
         
             
-                var html_ea2fc3977b8948c4865e8a5f27601a85 = $(`<div id="html_ea2fc3977b8948c4865e8a5f27601a85" style="width: 100.0%; height: 100.0%;">ToAD Janesville 2024</div>`)[0];
-                popup_e77b1cb568edd3ede091f44d739395a5.setContent(html_ea2fc3977b8948c4865e8a5f27601a85);
+                var html_e9a859f63445415db75d1dc97aa8781a = $(`<div id="html_e9a859f63445415db75d1dc97aa8781a" style="width: 100.0%; height: 100.0%;">ToAD Janesville 2024</div>`)[0];
+                popup_15b7aeb64cc95c2bf48e814ccf431c41.setContent(html_e9a859f63445415db75d1dc97aa8781a);
             
         
 
-        marker_b231ee7a81e01a2a33a68751a10a8d5a.bindPopup(popup_e77b1cb568edd3ede091f44d739395a5)
+        marker_b333511db98185207ec9cbd584cffe9e.bindPopup(popup_15b7aeb64cc95c2bf48e814ccf431c41)
         ;
 
         
     
     
-                marker_b231ee7a81e01a2a33a68751a10a8d5a.setIcon(icon_8060fc1238c252546264d07ec5e4fe51);
+                marker_b333511db98185207ec9cbd584cffe9e.setIcon(icon_6a3debc2e8bcc959d298669b26a30293);
             
     
-            var marker_a9ae3d4de281f3f977110b530d6f0f10 = L.marker(
+            var marker_c8718c897cf163b449ab12f8caedc6ec = L.marker(
                 [43.254406, -87.917091],
                 {
 }
-            ).addTo(map_9142a026dcb0f867e7b47eb8f9b76e72);
+            ).addTo(map_02b29a3c34628ce90ad7c4694838843d);
         
     
-            var icon_5637f1a0df15dd567469e4ae64423421 = L.AwesomeMarkers.icon(
+            var icon_53d491460a42d628828388d7c0c430bd = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -183,34 +192,34 @@
             );
         
     
-        var popup_be8f727b0f3be016b7f7c635c3a2f50c = L.popup({
+        var popup_04c170c9db72979132ee512864a249a2 = L.popup({
   "maxWidth": "100%",
 });
 
         
             
-                var html_83a76caa7ab1f0d10933750e73ceb2ae = $(`<div id="html_83a76caa7ab1f0d10933750e73ceb2ae" style="width: 100.0%; height: 100.0%;">Concordia 2025</div>`)[0];
-                popup_be8f727b0f3be016b7f7c635c3a2f50c.setContent(html_83a76caa7ab1f0d10933750e73ceb2ae);
+                var html_a66ffd2a084c969d972c8787a0e07a53 = $(`<div id="html_a66ffd2a084c969d972c8787a0e07a53" style="width: 100.0%; height: 100.0%;">Concordia 2025</div>`)[0];
+                popup_04c170c9db72979132ee512864a249a2.setContent(html_a66ffd2a084c969d972c8787a0e07a53);
             
         
 
-        marker_a9ae3d4de281f3f977110b530d6f0f10.bindPopup(popup_be8f727b0f3be016b7f7c635c3a2f50c)
+        marker_c8718c897cf163b449ab12f8caedc6ec.bindPopup(popup_04c170c9db72979132ee512864a249a2)
         ;
 
         
     
     
-                marker_a9ae3d4de281f3f977110b530d6f0f10.setIcon(icon_5637f1a0df15dd567469e4ae64423421);
+                marker_c8718c897cf163b449ab12f8caedc6ec.setIcon(icon_53d491460a42d628828388d7c0c430bd);
             
     
-            var marker_56204a58babda85be18bbccdac04a97a = L.marker(
+            var marker_c24ef5e991f4017f2454aa99d98e7ede = L.marker(
                 [43.813339, -91.256058],
                 {
 }
-            ).addTo(map_9142a026dcb0f867e7b47eb8f9b76e72);
+            ).addTo(map_02b29a3c34628ce90ad7c4694838843d);
         
     
-            var icon_fa327ea0900a8e7ad0f21d2a2d1b900d = L.AwesomeMarkers.icon(
+            var icon_52a8f62a5f47e2905118b1498e1641df = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -221,34 +230,34 @@
             );
         
     
-        var popup_ce501f6531393bd35bf58fa6543bb164 = L.popup({
+        var popup_ac3aeff258f74291c3ec4e29ea684a4a = L.popup({
   "maxWidth": "100%",
 });
 
         
             
-                var html_589b08c87c6c4ac2a702d3ca9d4a174d = $(`<div id="html_589b08c87c6c4ac2a702d3ca9d4a174d" style="width: 100.0%; height: 100.0%;">La Crosse Omnium 2025</div>`)[0];
-                popup_ce501f6531393bd35bf58fa6543bb164.setContent(html_589b08c87c6c4ac2a702d3ca9d4a174d);
+                var html_bac23fbd63fb9c0088d07c9399367ab3 = $(`<div id="html_bac23fbd63fb9c0088d07c9399367ab3" style="width: 100.0%; height: 100.0%;">La Crosse Omnium 2025</div>`)[0];
+                popup_ac3aeff258f74291c3ec4e29ea684a4a.setContent(html_bac23fbd63fb9c0088d07c9399367ab3);
             
         
 
-        marker_56204a58babda85be18bbccdac04a97a.bindPopup(popup_ce501f6531393bd35bf58fa6543bb164)
+        marker_c24ef5e991f4017f2454aa99d98e7ede.bindPopup(popup_ac3aeff258f74291c3ec4e29ea684a4a)
         ;
 
         
     
     
-                marker_56204a58babda85be18bbccdac04a97a.setIcon(icon_fa327ea0900a8e7ad0f21d2a2d1b900d);
+                marker_c24ef5e991f4017f2454aa99d98e7ede.setIcon(icon_52a8f62a5f47e2905118b1498e1641df);
             
     
-            var marker_3bff263e87166cafe879455f52bd7d36 = L.marker(
+            var marker_6aab87d6e5d39d33e6d301d4367de832 = L.marker(
                 [32.908742, -117.174781],
                 {
 }
-            ).addTo(map_9142a026dcb0f867e7b47eb8f9b76e72);
+            ).addTo(map_02b29a3c34628ce90ad7c4694838843d);
         
     
-            var icon_21a6c22bbb104ec51f80df74e8c47f87 = L.AwesomeMarkers.icon(
+            var icon_0f2b86832c060c5d62f2623689f62a17 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -259,34 +268,34 @@
             );
         
     
-        var popup_a28d7123ee7909dbf3eb9a20ce147359 = L.popup({
+        var popup_3ffd5bde30881d56b51e699a1cd01ea3 = L.popup({
   "maxWidth": "100%",
 });
 
         
             
-                var html_e9111001e07cf3d5731f0a1536bb2c70 = $(`<div id="html_e9111001e07cf3d5731f0a1536bb2c70" style="width: 100.0%; height: 100.0%;">Triton 2025</div>`)[0];
-                popup_a28d7123ee7909dbf3eb9a20ce147359.setContent(html_e9111001e07cf3d5731f0a1536bb2c70);
+                var html_d182f8c8938a92b27837e9d079e66536 = $(`<div id="html_d182f8c8938a92b27837e9d079e66536" style="width: 100.0%; height: 100.0%;">Triton 2025</div>`)[0];
+                popup_3ffd5bde30881d56b51e699a1cd01ea3.setContent(html_d182f8c8938a92b27837e9d079e66536);
             
         
 
-        marker_3bff263e87166cafe879455f52bd7d36.bindPopup(popup_a28d7123ee7909dbf3eb9a20ce147359)
+        marker_6aab87d6e5d39d33e6d301d4367de832.bindPopup(popup_3ffd5bde30881d56b51e699a1cd01ea3)
         ;
 
         
     
     
-                marker_3bff263e87166cafe879455f52bd7d36.setIcon(icon_21a6c22bbb104ec51f80df74e8c47f87);
+                marker_6aab87d6e5d39d33e6d301d4367de832.setIcon(icon_0f2b86832c060c5d62f2623689f62a17);
             
     
-            var marker_bb7641ad90a875cc589cbef6cf571959 = L.marker(
+            var marker_17083af81da4b715a59229cdd1c43151 = L.marker(
                 [43.317555, -87.952396],
                 {
 }
-            ).addTo(map_9142a026dcb0f867e7b47eb8f9b76e72);
+            ).addTo(map_02b29a3c34628ce90ad7c4694838843d);
         
     
-            var icon_93215cd311e2e7581ffe2ae51ca976f3 = L.AwesomeMarkers.icon(
+            var icon_6169f899b7dcac8d9707432feb2f318a = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -297,34 +306,34 @@
             );
         
     
-        var popup_bd095bb955778440b5b9f9c7bb2c7581 = L.popup({
+        var popup_6060ccf85b4537be18beea0ec9b30358 = L.popup({
   "maxWidth": "100%",
 });
 
         
             
-                var html_99f210e4e610540d1d943975e0c2fb67 = $(`<div id="html_99f210e4e610540d1d943975e0c2fb67" style="width: 100.0%; height: 100.0%;">ToAD Grafton 2024</div>`)[0];
-                popup_bd095bb955778440b5b9f9c7bb2c7581.setContent(html_99f210e4e610540d1d943975e0c2fb67);
+                var html_23a6d7020cdb5021e84f3e6406880506 = $(`<div id="html_23a6d7020cdb5021e84f3e6406880506" style="width: 100.0%; height: 100.0%;">ToAD Grafton 2024</div>`)[0];
+                popup_6060ccf85b4537be18beea0ec9b30358.setContent(html_23a6d7020cdb5021e84f3e6406880506);
             
         
 
-        marker_bb7641ad90a875cc589cbef6cf571959.bindPopup(popup_bd095bb955778440b5b9f9c7bb2c7581)
+        marker_17083af81da4b715a59229cdd1c43151.bindPopup(popup_6060ccf85b4537be18beea0ec9b30358)
         ;
 
         
     
     
-                marker_bb7641ad90a875cc589cbef6cf571959.setIcon(icon_93215cd311e2e7581ffe2ae51ca976f3);
+                marker_17083af81da4b715a59229cdd1c43151.setIcon(icon_6169f899b7dcac8d9707432feb2f318a);
             
     
-            var marker_3fcd56ddf68ab2f01f4a62ae9231f673 = L.marker(
+            var marker_815fb4e178c1e5c3eb71103052c36eba = L.marker(
                 [34.055528, -117.180774],
                 {
 }
-            ).addTo(map_9142a026dcb0f867e7b47eb8f9b76e72);
+            ).addTo(map_02b29a3c34628ce90ad7c4694838843d);
         
     
-            var icon_be4e01db07c08ccd3beada62b4577852 = L.AwesomeMarkers.icon(
+            var icon_6435ca1ac93b49258fd082cd34f9f13a = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -335,29 +344,24 @@
             );
         
     
-        var popup_73aad11480cce349baba42f01abbc350 = L.popup({
+        var popup_a0b52655c1a34ed781615704b8bb7a0c = L.popup({
   "maxWidth": "100%",
 });
 
         
             
-                var html_578d9bcf59b833172fc0029576d83a4e = $(`<div id="html_578d9bcf59b833172fc0029576d83a4e" style="width: 100.0%; height: 100.0%;">Redlands 2025</div>`)[0];
-                popup_73aad11480cce349baba42f01abbc350.setContent(html_578d9bcf59b833172fc0029576d83a4e);
+                var html_4bc1db1bd107bd588c64acac2f8a03bd = $(`<div id="html_4bc1db1bd107bd588c64acac2f8a03bd" style="width: 100.0%; height: 100.0%;">Redlands 2025</div>`)[0];
+                popup_a0b52655c1a34ed781615704b8bb7a0c.setContent(html_4bc1db1bd107bd588c64acac2f8a03bd);
             
         
 
-        marker_3fcd56ddf68ab2f01f4a62ae9231f673.bindPopup(popup_73aad11480cce349baba42f01abbc350)
+        marker_815fb4e178c1e5c3eb71103052c36eba.bindPopup(popup_a0b52655c1a34ed781615704b8bb7a0c)
         ;
 
         
     
     
-                marker_3fcd56ddf68ab2f01f4a62ae9231f673.setIcon(icon_be4e01db07c08ccd3beada62b4577852);
+                marker_815fb4e178c1e5c3eb71103052c36eba.setIcon(icon_6435ca1ac93b49258fd082cd34f9f13a);
             
 </script>
-
-  <footer style="text-align:center; padding:1em; font-size:0.8em; color:gray;">
-    © 2025 Julia Hazenberg. All rights reserved. For informational purposes only.
-  </footer>
-</body>
 </html>
