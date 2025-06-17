@@ -52,6 +52,7 @@ for filename in os.listdir(GPX_DIR):
     print(f"Processing: {folder_name}")
     os.makedirs(output_subdir, exist_ok=True)
 
+    # Use your updated details_template (unchanged here)
     details_template.process_course(
         gpx_path=gpx_path,
         output_dir=output_subdir,
@@ -59,6 +60,7 @@ for filename in os.listdir(GPX_DIR):
         year=year
     )
 
+    # Use the updated frontcard_template.process_frontcard that implements full lap detection & closed loop
     frontcard_template.process_frontcard(
         gpx_path=gpx_path,
         output_dir=output_subdir,
@@ -66,6 +68,7 @@ for filename in os.listdir(GPX_DIR):
         year=year
     )
 
+    # Load stats to extract state info
     stats_path = os.path.join(output_subdir, f"{critname_raw}_crit_{year}_stats.json")
     with open(stats_path, encoding="utf-8") as stats_file:
         stats = json.load(stats_file)
@@ -80,7 +83,7 @@ for filename in os.listdir(GPX_DIR):
         "state": state,
     })
 
-# Sort and generate index.html
+# Sort and generate index.html with state filtering
 course_info_list.sort(key=lambda x: x["critname"].lower())
 
 course_cards = []
