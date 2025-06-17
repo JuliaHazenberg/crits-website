@@ -233,18 +233,11 @@ print("✅ calendar.html generated")
 
 # --- EVENT_MAP.HTML ---
 
-# Create simple map centered on USA with markers for all crit locations
+# Create a simple empty map centered on USA without any markers
 m = folium.Map(location=[39.5, -98.35], zoom_start=4, tiles="OpenStreetMap")
 
-for loc in crit_locations:
-    folium.Marker(
-        [loc["lat"], loc["lon"]],
-        popup=f'{loc["name"]} {loc["year"]}',
-        icon=folium.Icon(color="blue", icon="bicycle", prefix="fa")
-    ).add_to(m)
-
-# Save the full folium HTML directly to event_map.html
+# Save the map HTML directly to event_map.html
 m.save(EVENT_MAP_HTML)
 
-print("✅ event_map.html generated with simple map")
+print("✅ event_map.html generated with simple empty map")
 
