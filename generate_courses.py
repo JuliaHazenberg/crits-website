@@ -120,7 +120,7 @@ with open(INDEX_HTML, "w", encoding="utf-8") as f:
   <header>
     <h1>Crit Courses</h1>
     <nav style="text-align: center; margin-bottom: 1rem;">
-      <a href="index.html">Home</a> |
+      <a href="index.html">Courses</a> |
       <a href="calendar.html">Event Calendar</a>
     </nav>
   </header>
@@ -211,7 +211,7 @@ if os.path.exists(EVENTS_JSON):
 <body>
   <header>
     <h1>Crit Courses</h1>
-    <nav><a href="index.html">Home</a> | <a href="calendar.html">Event Calendar</a></nav>
+    <nav><a href="index.html">Courses</a> | <a href="calendar.html">Event Calendar</a></nav>
   </header>
 
   <main><div class="calendar-grid">{sections}</div></main>
