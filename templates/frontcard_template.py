@@ -16,6 +16,15 @@ def extract_gpx_points(gpx):
     else:
         raise ValueError("GPX file does not contain <trk> or <rte> data.")
 
+def get_crit_location(gpx_path):
+    with open(gpx_path, encoding="utf-8") as gpx_file:
+        gpx = gpxpy.parse(gpx_file)
+    points = extract_gpx_points(gpx)
+    if points:
+        return points[0][0], points[0][1]  # (lat, lon)
+    else:
+        return None, None
+
 def process_frontcard(gpx_path, output_dir, critname, year):
     with open(gpx_path, encoding="utf-8") as gpx_file:
         gpx = gpxpy.parse(gpx_file)
