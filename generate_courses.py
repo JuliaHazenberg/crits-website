@@ -169,13 +169,13 @@ if os.path.exists(EVENTS_JSON):
             print(f"❌ Error loading events.json: {e}")
             events = []
 
-    # group by month
+    # group events by month
     events_by_month = defaultdict(list)
-    all_states = set()  # *** UPDATED ***
+    all_states = set()
     for e in events:
         month = e["date"]
         state = e.get("state", "Unknown").replace(" ", "_")
-        all_states.add(state)  # *** UPDATED ***
+        all_states.add(state)
         events_by_month[month].append({
             "critname": e["critname"],
             "state": state
@@ -184,29 +184,28 @@ if os.path.exists(EVENTS_JSON):
     month_order = ["January","February","March","April","May","June",
                    "July","August","September","October","November","December"]
 
-    # build month‑cards (NO leading new‑lines / spaces!)
     # Get current month as string (e.g., "June")
     current_month_name = datetime.now().strftime("%B")
-    
+
     month_cards = []
     for m in month_order:
         highlight = " current-month" if m == current_month_name else ""
         if m in events_by_month:
             items = "".join(
-                f'<li data-state="{ev["state"]}">{ev["critname"]}</li>' 
+                f'<li data-state="{ev["state"]}">{ev["critname"]}</li>'
                 for ev in sorted(events_by_month[m], key=lambda x: x["critname"])
             )
             month_cards.append(
                 f'<div class="month-card{highlight}"><h2>{m}</h2><ul>{items}</ul></div>'
             )
         else:
+            # No events this month, still show empty month with placeholder
             month_cards.append(
                 f'<div class="month-card{highlight}"><h2>{m}</h2><p> </p></div>'
             )
 
-    sections = "".join(month_cards)  # <- no whitespace nodes
+    sections = "".join(month_cards)  # no extra whitespace
 
-    # final calendar HTML with filter UI and JS - *** UPDATED ***
     calendar_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -231,7 +230,7 @@ if os.path.exists(EVENTS_JSON):
     <nav><a href="index.html">Courses</a> | <a href="calendar.html">Event Calendar</a></nav>
   </header>
 
-  <div class="filter-bar"> <!-- *** UPDATED *** -->
+  <div class="filter-bar">
     <label for="calendarStateFilter">Filter by State:</label>
     <select id="calendarStateFilter">
       <option value="all">All States</option>
@@ -241,26 +240,22 @@ if os.path.exists(EVENTS_JSON):
 
   <main><div class="calendar-grid">{sections}</div></main>
 
-  <script>  <!-- *** UPDATED *** -->
+  <script>
     const calendarSelect = document.getElementById('calendarStateFilter');
     const monthCards = document.querySelectorAll('.month-card');
 
     calendarSelect.addEventListener('change', () => {{
       const selected = calendarSelect.value;
       monthCards.forEach(monthCard => {{
-        // Get all <li> inside this monthCard
         const items = monthCard.querySelectorAll('li');
-        let anyVisible = false;
         items.forEach(item => {{
           if (selected === 'all' || item.dataset.state === selected) {{
             item.style.display = '';
-            anyVisible = true;
           }} else {{
             item.style.display = 'none';
           }}
         }});
-        // If no items visible, hide the entire monthCard
-        monthCard.style.display = anyVisible ? '' : 'none';
+        // Note: do NOT hide month card itself, so all months remain visible
       }});
     }});
   </script>
@@ -274,4 +269,4 @@ if os.path.exists(EVENTS_JSON):
 
     print("✅ calendar.html generated.")
 else:
-    print("⚠️ events.json not found — skipping calendar generation.")
+    print("⚠️ events.json not found — skipping calendar generation.")
