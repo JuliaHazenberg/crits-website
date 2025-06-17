@@ -241,6 +241,8 @@ if os.path.exists(EVENTS_JSON):
       display: grid;
       grid-template-columns: repeat(4, 1fr);  /* Always 4 columns */;
       gap: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
     }}
 
     .month-card {{
