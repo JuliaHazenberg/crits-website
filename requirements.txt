@@ -1,4 +1,5 @@
 branca
+bs4
 folium
 geopy
 gpxpy
