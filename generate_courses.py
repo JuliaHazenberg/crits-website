@@ -193,45 +193,14 @@ if os.path.exists(EVENTS_JSON):
 
     # final HTML (brace‑escaped)
     # final HTML (brace‑escaped)
-    calendar_html = f"""<!DOCTYPE html>
+    
+       calendar_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Crit Event Calendar</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    body {{
-      font-family: 'Segoe UI', sans-serif;
-      background:#f5f5f5; color:#333; margin:0;
-    }}
-    header {{
-      background:#004c3f; color:#fff; padding:1.6rem 1rem;
-      text-align:center; box-shadow:0 4px 10px rgba(0,0,0,.15);
-    }}
-    header h1 {{ font-size:3.5rem; margin:0 0 .5rem; }}
-    nav a {{ color:#fff; margin:0 1rem; font-weight:600; text-decoration:none; }}
-    nav a:hover {{ text-decoration:underline; }}
-
-    main {{
-      margin:2rem auto;
-      padding:0 1rem;
-    }}
-
-    .month-card {{
-      background:#fff; border-radius:12px;
-      box-shadow:0 4px 12px rgba(0,0,0,.08);
-      padding:1.5rem; min-height:200px;
-      transition:transform .2s;
-    }}
-    .month-card:hover {{ transform:translateY(-4px); }}
-    .month-card h2 {{ font-size:1.5rem; color:#004c3f; margin:0 0 1rem; text-align:center; }}
-    ul {{ margin:0; padding-left:1.2rem; line-height:1.5; }}
-    footer {{
-      text-align:center; padding:1em; font-size:.8em; color:gray;
-      background:#f5f5f5; box-shadow:0 -2px 5px rgba(0,0,0,.1);
-    }}
-  </style>
 </head>
 <body>
   <header>
@@ -241,7 +210,7 @@ if os.path.exists(EVENTS_JSON):
 
   <main><div class="calendar-grid">{sections}</div></main>
 
-  <footer>© 2025 Julia Hazenberg. All rights reserved.</footer>
+  <footer>© 2025 Julia Hazenberg. All rights reserved.</footer>
 </body>
 </html>"""
 
