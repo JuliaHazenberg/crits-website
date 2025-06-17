@@ -192,107 +192,98 @@ if os.path.exists(EVENTS_JSON):
 <head>
   <meta charset="UTF-8">
   <title>Crit Event Calendar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="style.css" />
   <style>
-    body {{
+    body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f9f9f9;
-      color: #222;
+      background-color: #f5f5f5;
+      color: #333;
       margin: 0;
       padding: 0;
-    }}
+    }
 
-    header {{
+    header {
       background-color: #004c3f;
       color: #fff;
-      padding: 2rem 1rem 1.5rem;
+      padding: 1.5rem 1rem;
       text-align: center;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    }}
+    }
 
-    header h1 {{
+    header h1 {
       font-size: 3.5rem;
-      margin: 0;
-    }}
+      margin: 0 0 0.5rem 0;
+    }
 
-    nav {{
+    nav {
       font-size: 1rem;
-      margin-top: 0.5rem;
-    }}
+    }
 
-    nav a {{
+    nav a {
       color: white;
       text-decoration: none;
       margin: 0 1rem;
       font-weight: 600;
-    }}
+    }
 
-    nav a:hover {{
+    nav a:hover {
       text-decoration: underline;
-    }}
+    }
 
-    main {{
+    main {
       max-width: 1200px;
       margin: 2rem auto;
       padding: 0 1rem;
-    }}
+    }
 
-.calendar-grid {{
+    .calendar-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);  /* Always 4 columns */;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1.5rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }}
+    }
 
-    .month-card {{
-      background: #fff;
+    .month-card {
+      background-color: white;
       border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      padding: 1.2rem 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      padding: 1.5rem;
+      min-height: 200px;
       display: flex;
       flex-direction: column;
-    }}
+      justify-content: flex-start;
+      transition: transform 0.2s ease;
+    }
 
-    .month-card h2 {{
+    .month-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .month-card h2 {
       font-size: 1.5rem;
+      margin-bottom: 1rem;
       color: #004c3f;
-      margin-top: 0;
-      margin-bottom: 0.5rem;
-      text-align: center;
-    }}
+    }
 
-    ul {{
-      list-style-type: disc;
+    .month-card ul {
       padding-left: 1.2rem;
-      margin: 0;
-    }}
-
-    li {{
       font-size: 1rem;
-      padding: 0.2rem 0;
-    }}
+      line-height: 1.5;
+    }
 
-    li:hover {{
-      color: #007e66;
-      cursor: default;
-    }}
+    .month-card p {
+      font-size: 1rem;
+      color: #777;
+    }
 
-    .no-events {{
-      color: #999;
-      font-style: italic;
-      font-size: 0.95rem;
+    footer {
       text-align: center;
-    }}
-
-    footer {{
-      text-align: center;
-      padding: 1.5rem 1rem;
-      font-size: 0.9em;
+      padding: 1em;
+      font-size: 0.8em;
       color: gray;
-      background-color: #f1f1f1;
-      border-top: 1px solid #ddd;
-    }}
+      background-color: #f5f5f5;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    }
   </style>
 </head>
 <body>
@@ -306,16 +297,21 @@ if os.path.exists(EVENTS_JSON):
 
   <main>
     <div class="calendar-grid">
-      {''.join(f'''
-        <div class="month-card">
-          <h2>{month}</h2>
-          {(
-            f"<ul>{''.join(f'<li>{event}</li>' for event in sorted(events_by_month[month]))}</ul>"
-            if month in events_by_month
-            else '<p class="no-events">No events listed.</p>'
-          )}
-        </div>
-      ''' for month in month_order)}
+      <!-- Injected month cards here -->
+      <!-- Example card -->
+      <div class="month-card">
+        <h2>January</h2>
+        <p>No events listed.</p>
+      </div>
+      <div class="month-card">
+        <h2>February</h2>
+        <ul><li>Example Crit</li></ul>
+      </div>
+      <div class="month-card">
+        <h2>March</h2>
+        <p>No events listed.</p>
+      </div>
+      <!-- etc... (this is filled dynamically by your Python script) -->
     </div>
   </main>
 
@@ -323,7 +319,8 @@ if os.path.exists(EVENTS_JSON):
     © 2025 Julia Hazenberg. All rights reserved.
   </footer>
 </body>
-</html>"""
+</html>
+"""
 
     with open(CALENDAR_HTML, "w", encoding="utf-8") as f:
         f.write(calendar_html)
