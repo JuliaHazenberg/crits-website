@@ -146,6 +146,10 @@ with open(INDEX_HTML, "w", encoding="utf-8") as f:
       }});
     }});
   </script>
+
+  <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
+    © 2025 Julia Hazenberg. All rights reserved. For informational purposes only.
+  </footer>
 </body>
 </html>""")
 
@@ -218,6 +222,10 @@ with open(CALENDAR_HTML, "w", encoding="utf-8") as f:
       }});
     }});
   </script>
+
+  <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
+    © 2025 Julia Hazenberg. All rights reserved. For informational purposes only.
+  </footer>
 </body>
 </html>""")
 
