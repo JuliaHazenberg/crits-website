@@ -4,6 +4,8 @@ from templates import details_template, frontcard_template
 import json
 from collections import defaultdict
 from datetime import datetime
+import gpxpy
+import folium
 
 # Paths
 BASE_DIR = os.path.dirname(__file__)
@@ -12,6 +14,7 @@ OUTPUT_DIR = os.path.join(BASE_DIR, "courses")
 INDEX_HTML = os.path.join(BASE_DIR, "index.html")
 CALENDAR_HTML = os.path.join(BASE_DIR, "calendar.html")
 EVENTS_JSON = os.path.join(BASE_DIR, "data", "events.json")
+EVENT_MAP_HTML = os.path.join(BASE_DIR, "event_map.html")
 
 # Ensure output directory exists
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -22,6 +25,7 @@ pattern = re.compile(r"(?P<critname>.+?)_crit_(?P<year>\d{4})\.gpx")
 # Store course info for index.html
 course_info_list = []
 states = set()
+crit_locations = []  # For event map markers
 
 def fix_case(critname_raw):
     special_case_words = ['ToAD', 'CBR']
@@ -30,6 +34,33 @@ def fix_case(critname_raw):
         for word in critname_raw.replace('_', ' ').split()
     )
     return critname
+
+def get_start_point(gpx_path):
+    with open(gpx_path, encoding="utf-8") as gpx_file:
+        gpx = gpxpy.parse(gpx_file)
+    if gpx.tracks and gpx.tracks[0].segments and gpx.tracks[0].segments[0].points:
+        first_point = gpx.tracks[0].segments[0].points[0]
+        return (first_point.latitude, first_point.longitude)
+    elif gpx.routes and gpx.routes[0].points:
+        first_point = gpx.routes[0].points[0]
+        return (first_point.latitude, first_point.longitude)
+    else:
+        return None
+
+def generate_event_map(crit_locations, output_path):
+    # Center map on US roughly
+    m = folium.Map(location=[39.5, -98.35], zoom_start=4, tiles="OpenStreetMap")
+
+    for crit in crit_locations:
+        popup_html = f'<a href="courses/{crit["folder"]}/{crit["critname_raw"]}_crit_{crit["year"]}_details.html" target="_blank">{crit["name"]} {crit["year"]}</a>'
+        folium.Marker(
+            location=[crit["lat"], crit["lon"]],
+            popup=popup_html,
+            icon=folium.Icon(color="blue", icon="bicycle", prefix='fa')
+        ).add_to(m)
+
+    m.save(output_path)
+    print(f"✅ Event map saved to {output_path}")
 
 # Process all GPX files
 for filename in os.listdir(GPX_DIR):
@@ -52,7 +83,7 @@ for filename in os.listdir(GPX_DIR):
     print(f"Processing: {folder_name}")
     os.makedirs(output_subdir, exist_ok=True)
 
-    # Use your updated details_template (unchanged here)
+    # Process details and front card templates (existing code)
     details_template.process_course(
         gpx_path=gpx_path,
         output_dir=output_subdir,
@@ -60,7 +91,6 @@ for filename in os.listdir(GPX_DIR):
         year=year
     )
 
-    # Use the updated frontcard_template.process_frontcard that implements full lap detection & closed loop
     frontcard_template.process_frontcard(
         gpx_path=gpx_path,
         output_dir=output_subdir,
@@ -68,12 +98,24 @@ for filename in os.listdir(GPX_DIR):
         year=year
     )
 
-    # Load stats to extract state info
+    # Load stats to get state info
     stats_path = os.path.join(output_subdir, f"{critname_raw}_crit_{year}_stats.json")
     with open(stats_path, encoding="utf-8") as stats_file:
         stats = json.load(stats_file)
         state = stats.get("State", "Unknown").replace(" ", "_")
         states.add(state)
+
+    # Extract start coordinates for event map
+    start_coords = get_start_point(gpx_path)
+    if start_coords:
+        crit_locations.append({
+            "name": critname,
+            "year": year,
+            "lat": start_coords[0],
+            "lon": start_coords[1],
+            "folder": folder_name,
+            "critname_raw": critname_raw,
+        })
 
     course_info_list.append({
         "folder_name": folder_name,
@@ -83,7 +125,7 @@ for filename in os.listdir(GPX_DIR):
         "state": state,
     })
 
-# Sort and generate index.html with state filtering
+# Sort and generate index.html with updated nav including Event Map tab
 course_info_list.sort(key=lambda x: x["critname"].lower())
 
 course_cards = []
@@ -124,7 +166,8 @@ with open(INDEX_HTML, "w", encoding="utf-8") as f:
     <h1>Crit Courses</h1>
     <nav style="text-align: center; margin-bottom: 1rem;">
       <a href="index.html">Courses</a> |
-      <a href="calendar.html">Event Calendar</a>
+      <a href="calendar.html">Event Calendar</a> |
+      <a href="event_map.html">Event Map</a>
     </nav>
   </header>
 
@@ -230,7 +273,11 @@ if os.path.exists(EVENTS_JSON):
 <body>
   <header>
     <h1>Event Calendar</h1>
-    <nav><a href="index.html">Courses</a> | <a href="calendar.html">Event Calendar</a></nav>
+    <nav style="text-align: center; margin-bottom: 1rem;">
+      <a href="index.html">Courses</a> |
+      <a href="calendar.html">Event Calendar</a> |
+      <a href="event_map.html">Event Map</a>
+    </nav>
   </header>
 
   <div class="filter-bar">
@@ -263,7 +310,9 @@ if os.path.exists(EVENTS_JSON):
     }});
   </script>
 
-  <footer>© 2025 Julia Hazenberg. All rights reserved.</footer>
+  <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
+    © 2025 Julia Hazenberg. All rights reserved.
+  </footer>
 </body>
 </html>"""
 
@@ -273,3 +322,6 @@ if os.path.exists(EVENTS_JSON):
     print("✅ calendar.html generated.")
 else:
     print("⚠️ events.json not found — skipping calendar generation.")
+
+# --- EVENT MAP GENERATION -----------------------------------------------
+generate_event_map(crit_locations, EVENT_MAP_HTML)
