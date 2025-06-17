@@ -223,60 +223,68 @@ with open(CALENDAR_HTML, "w", encoding="utf-8") as f:
 
 print("✅ calendar.html generated")
 
-# --- EVENT_MAP.HTML ---
-# Step 1: Create the Folium map and save temporarily
+# --- EVENT_MAP.HTML ----------------------------------------------------
+# 1) build the Folium map and save once
 m = folium.Map(location=[39.5, -98.35], zoom_start=4, tiles="OpenStreetMap")
+
 for loc in crit_locations:
     folium.Marker(
         [loc["lat"], loc["lon"]],
         popup=(f'<a href="courses/{loc["folder"]}/{loc["raw"]}_crit_{loc["year"]}_details.html" '
-               f'target="_blank">{loc["name"]} {loc["year"]}</a>'),
+               f'target="_blank">{loc["name"]} {loc["year"]}</a>'),
         icon=folium.Icon(color="blue", icon="bicycle", prefix="fa")
     ).add_to(m)
 
-temp_map_path = os.path.join(BASE_DIR, "temp_event_map.html")
-m.save(temp_map_path)
+_tmp = os.path.join(BASE_DIR, "tmp_event_map.html")
+m.save(_tmp)
 
-# Step 2: Use BeautifulSoup to extract head and body contents from the Folium map
-with open(temp_map_path, "r", encoding="utf-8") as f:
-    soup = BeautifulSoup(f, "html.parser")
-    folium_head = soup.head
-    folium_body = soup.body
+# 2) pull out ONLY the pieces we need
+with open(_tmp, encoding="utf-8") as html_in:
+    soup = BeautifulSoup(html_in, "html.parser")
 
-# Step 3: Assemble final HTML using your layout and the extracted parts
-with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
-    f.write(f"""<!DOCTYPE html>
+folium_assets = "".join(
+    str(tag) for tag in soup.head.select("link, script, style")
+)
+
+folium_payload = "".join(
+    str(tag) for tag in soup.body.contents   # div + script
+)
+
+os.remove(_tmp)
+
+# 3) write final page
+with open(EVENT_MAP_HTML, "w", encoding="utf-8") as html_out:
+    html_out.write(f"""<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Event Map</title>
-  <link rel="stylesheet" href="style.css" />
-  {folium_head}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Event Map</title>
+  <link rel="stylesheet" href="style.css">
+  {folium_assets}   <!-- Leaflet / JS from Folium -->
 </head>
 <body>
   <header>
-    <h1>Event Map</h1>
+    <h1>Event Map</h1>
     <nav>
       <a href="index.html">Courses</a>
-      <a href="calendar.html">Event Calendar</a>
-      <a href="event_map.html">Event Map</a>
+      <a href="calendar.html">Event Calendar</a>
+      <a href="event_map.html">Event Map</a>
     </nav>
   </header>
 
-  <main style="width: 90%; margin: 0 auto; padding-top: 1rem;">
-    {folium_body}
+  <main style="width:90%;margin:0 auto;padding-top:1rem;">
+    {folium_payload}   <!-- map div + JS -->
   </main>
 
-  <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
-    © 2025 Julia Hazenberg. All rights reserved.
+  <footer style="text-align:center;padding:1em;font-size:.8em;color:gray;">
+    © 2025 Julia Hazenberg. All rights reserved.
   </footer>
 </body>
 </html>""")
 
-os.remove(temp_map_path)
+print("✅ event_map.html generated")
 
-print("✅ event_map.html generated")
 
 
 print(f"📍 index.html will be saved to: {INDEX_HTML}")
