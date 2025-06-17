@@ -226,7 +226,7 @@ if os.path.exists(EVENTS_JSON):
 </head>
 <body>
   <header>
-    <h1>Crit Courses</h1>
+    <h1>Event Calendar</h1>
     <nav><a href="index.html">Courses</a> | <a href="calendar.html">Event Calendar</a></nav>
   </header>
 
