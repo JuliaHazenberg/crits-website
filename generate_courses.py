@@ -214,12 +214,12 @@ if os.path.exists(EVENTS_JSON):
 
     main {{ max-width:1200px; margin:2rem auto; padding:0 1rem; }}
 
-    /* responsive 4‑col grid that collapses nicely */
-    .calendar-grid {{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(320px, 1fr));
-      gap:1.5rem;
-    }}
+    # /* responsive 4‑col grid that collapses nicely */
+    # .calendar-grid {{
+    #   display:grid;
+    #   grid-template-columns:repeat(auto-fit,minmax(320px, 1fr));
+    #   gap:1.5rem;
+    # }}
 
     .month-card {{
       background:#fff; border-radius:12px;
