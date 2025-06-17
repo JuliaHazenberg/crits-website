@@ -259,3 +259,7 @@ with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
 </html>""")
 
 print("✅ event_map.html generated")
+
+print(f"📍 index.html will be saved to: {INDEX_HTML}")
+print(f"📍 calendar.html will be saved to: {CALENDAR_HTML}")
+print(f"📍 event_map.html will be saved to: {EVENT_MAP_HTML}")
