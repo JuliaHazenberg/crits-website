@@ -192,7 +192,11 @@ if os.path.exists(EVENTS_JSON):
     for m in month_order:
         highlight = " current-month" if m == current_month_name else ""
         if m in events_by_month:
-            items = "".join(f"<li>{ev}</li>" for ev in sorted(events_by_month[m]))
+            items = "".join(
+                f'<li data-state="{ev["state"]}">{ev["critname"]}</li>' 
+                for ev in sorted(events_by_month[m], key=lambda x: x["critname"])
+            )
+
             month_cards.append(
                 f'<div class="month-card{highlight}"><h2>{m}</h2><ul>{items}</ul></div>'
             )
