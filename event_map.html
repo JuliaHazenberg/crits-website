@@ -1,25 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Event Map</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header>
-    <h1>Event Map</h1>
-    <nav>
-      <a href="index.html">Courses</a>
-      <a href="calendar.html">Event Calendar</a>
-      <a href="event_map.html">Event Map</a>
-    </nav>
-  </header>
-
-  <main style="width: 90%; margin: 0 auto; padding-top: 1rem;">
-    <div class="map-wrapper">
-      <style>
-                #map_7abf282bb7870ad86139233c1ca8b6b7 {
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_82b45bbe2690e9af808cc99d9dbc2aeb {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -28,14 +26,16 @@
                 }
                 .leaflet-container { font-size: 1rem; }
             </style>
-<style>html, body {
+
+            <style>html, body {
                 width: 100%;
                 height: 100%;
                 margin: 0;
                 padding: 0;
             }
             </style>
-<style>#map {
+
+            <style>#map {
                 position:absolute;
                 top:0;
                 bottom:0;
@@ -43,20 +43,25 @@
                 left:0;
                 }
             </style>
-<div class="folium-map" id="map_7abf282bb7870ad86139233c1ca8b6b7"></div>
-<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
-<script>
+
+            <script>
                 L_NO_TOUCH = false;
                 L_DISABLE_3D = false;
             </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_82b45bbe2690e9af808cc99d9dbc2aeb" ></div>
+        
+</body>
 <script>
     
     
-            var map_7abf282bb7870ad86139233c1ca8b6b7 = L.map(
-                "map_7abf282bb7870ad86139233c1ca8b6b7",
+            var map_82b45bbe2690e9af808cc99d9dbc2aeb = L.map(
+                "map_82b45bbe2690e9af808cc99d9dbc2aeb",
                 {
                     center: [39.5, -98.35],
                     crs: L.CRS.EPSG3857,
@@ -73,7 +78,7 @@
 
         
     
-            var tile_layer_4fbfcc16e6a5e607563909ae3fb203f2 = L.tileLayer(
+            var tile_layer_d04a8b25145c03b09b2965082f82ba18 = L.tileLayer(
                 "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {
   "minZoom": 0,
@@ -90,17 +95,17 @@
             );
         
     
-            tile_layer_4fbfcc16e6a5e607563909ae3fb203f2.addTo(map_7abf282bb7870ad86139233c1ca8b6b7);
+            tile_layer_d04a8b25145c03b09b2965082f82ba18.addTo(map_82b45bbe2690e9af808cc99d9dbc2aeb);
         
     
-            var marker_35f76568d5e4e441ad994e4c43539bbc = L.marker(
+            var marker_a831a1d2970197d48194bfdb83d272b9 = L.marker(
                 [41.10691, -87.858818],
                 {
 }
-            ).addTo(map_7abf282bb7870ad86139233c1ca8b6b7);
+            ).addTo(map_82b45bbe2690e9af808cc99d9dbc2aeb);
         
     
-            var icon_1fbea0f4aa877d225b4c80d8b04537e9 = L.AwesomeMarkers.icon(
+            var icon_c61a64164d01fb6be365992522c8253b = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -111,34 +116,34 @@
             );
         
     
-        var popup_695a5729b117577f4b6c9796f3896b68 = L.popup({
+        var popup_1ca83e7b8508927e2ae9e5036f0b9d1b = L.popup({
   "maxWidth": "100%",
 });
 
         
             
-                var html_879617d2758eb03f90608259bf14d762 = $(`<div id="html_879617d2758eb03f90608259bf14d762" style="width: 100.0%; height: 100.0%;"><a href="courses/Cobb Park_2025/Cobb Park_crit_2025_details.html" target="_blank">Cobb Park 2025</a></div>`)[0];
-                popup_695a5729b117577f4b6c9796f3896b68.setContent(html_879617d2758eb03f90608259bf14d762);
+                var html_87fc9e76a40021a0d8cc20067967a300 = $(`<div id="html_87fc9e76a40021a0d8cc20067967a300" style="width: 100.0%; height: 100.0%;">Cobb Park 2025</div>`)[0];
+                popup_1ca83e7b8508927e2ae9e5036f0b9d1b.setContent(html_87fc9e76a40021a0d8cc20067967a300);
             
         
 
-        marker_35f76568d5e4e441ad994e4c43539bbc.bindPopup(popup_695a5729b117577f4b6c9796f3896b68)
+        marker_a831a1d2970197d48194bfdb83d272b9.bindPopup(popup_1ca83e7b8508927e2ae9e5036f0b9d1b)
         ;
 
         
     
     
-                marker_35f76568d5e4e441ad994e4c43539bbc.setIcon(icon_1fbea0f4aa877d225b4c80d8b04537e9);
+                marker_a831a1d2970197d48194bfdb83d272b9.setIcon(icon_c61a64164d01fb6be365992522c8253b);
             
     
-            var marker_dc34c76834da6034872b67fc786ca86e = L.marker(
+            var marker_7d16d7109bab518b7fba436a6f617a99 = L.marker(
                 [42.68182, -89.025902],
                 {
 }
-            ).addTo(map_7abf282bb7870ad86139233c1ca8b6b7);
+            ).addTo(map_82b45bbe2690e9af808cc99d9dbc2aeb);
         
     
-            var icon_e88e25a9962d31a771a2c17c245bcd53 = L.AwesomeMarkers.icon(
+            var icon_ef7dea35543228ba7adbf001ebd53918 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -149,34 +154,34 @@
             );
         
     
-        var popup_9190fe641023b6b6a467c1e8de638d7b = L.popup({
+        var popup_c65a00ff675eea93d735b654c9be1f4e = L.popup({
   "maxWidth": "100%",
 });
 
         
             
-                var html_d2797dceb41a95622c126dcd7f91b05e = $(`<div id="html_d2797dceb41a95622c126dcd7f91b05e" style="width: 100.0%; height: 100.0%;"><a href="courses/ToAD Janesville_2024/ToAD Janesville_crit_2024_details.html" target="_blank">ToAD Janesville 2024</a></div>`)[0];
-                popup_9190fe641023b6b6a467c1e8de638d7b.setContent(html_d2797dceb41a95622c126dcd7f91b05e);
+                var html_dc84534fe2394335175bb53a99b7790a = $(`<div id="html_dc84534fe2394335175bb53a99b7790a" style="width: 100.0%; height: 100.0%;">ToAD Janesville 2024</div>`)[0];
+                popup_c65a00ff675eea93d735b654c9be1f4e.setContent(html_dc84534fe2394335175bb53a99b7790a);
             
         
 
-        marker_dc34c76834da6034872b67fc786ca86e.bindPopup(popup_9190fe641023b6b6a467c1e8de638d7b)
+        marker_7d16d7109bab518b7fba436a6f617a99.bindPopup(popup_c65a00ff675eea93d735b654c9be1f4e)
         ;
 
         
     
     
-                marker_dc34c76834da6034872b67fc786ca86e.setIcon(icon_e88e25a9962d31a771a2c17c245bcd53);
+                marker_7d16d7109bab518b7fba436a6f617a99.setIcon(icon_ef7dea35543228ba7adbf001ebd53918);
             
     
-            var marker_70442fcb79c4b778da90e55ed8be7ec4 = L.marker(
+            var marker_073d1b3d5e30c50ea896ec8a933f06c4 = L.marker(
                 [43.254406, -87.917091],
                 {
 }
-            ).addTo(map_7abf282bb7870ad86139233c1ca8b6b7);
+            ).addTo(map_82b45bbe2690e9af808cc99d9dbc2aeb);
         
     
-            var icon_c4d50cca4349ac0859cbf55cd4808d2e = L.AwesomeMarkers.icon(
+            var icon_6a7884781e9475e29a1c310ae9fb31be = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -187,34 +192,34 @@
             );
         
     
-        var popup_f7d3556d31a79508d7c40280e946cb16 = L.popup({
+        var popup_8f166b79cdb8963f99d925c522842770 = L.popup({
   "maxWidth": "100%",
 });
 
         
             
-                var html_2c8a0fd20e7df7d1ae22aadd8ac0f692 = $(`<div id="html_2c8a0fd20e7df7d1ae22aadd8ac0f692" style="width: 100.0%; height: 100.0%;"><a href="courses/Concordia_2025/Concordia_crit_2025_details.html" target="_blank">Concordia 2025</a></div>`)[0];
-                popup_f7d3556d31a79508d7c40280e946cb16.setContent(html_2c8a0fd20e7df7d1ae22aadd8ac0f692);
+                var html_a5ac9a856db462d50477b3598d0737ae = $(`<div id="html_a5ac9a856db462d50477b3598d0737ae" style="width: 100.0%; height: 100.0%;">Concordia 2025</div>`)[0];
+                popup_8f166b79cdb8963f99d925c522842770.setContent(html_a5ac9a856db462d50477b3598d0737ae);
             
         
 
-        marker_70442fcb79c4b778da90e55ed8be7ec4.bindPopup(popup_f7d3556d31a79508d7c40280e946cb16)
+        marker_073d1b3d5e30c50ea896ec8a933f06c4.bindPopup(popup_8f166b79cdb8963f99d925c522842770)
         ;
 
         
     
     
-                marker_70442fcb79c4b778da90e55ed8be7ec4.setIcon(icon_c4d50cca4349ac0859cbf55cd4808d2e);
+                marker_073d1b3d5e30c50ea896ec8a933f06c4.setIcon(icon_6a7884781e9475e29a1c310ae9fb31be);
             
     
-            var marker_6c43c4bb437f5a8b6ccf28ec05a9516a = L.marker(
+            var marker_39ec2e0391bde1c0e4f97a460b4ce1dd = L.marker(
                 [43.813339, -91.256058],
                 {
 }
-            ).addTo(map_7abf282bb7870ad86139233c1ca8b6b7);
+            ).addTo(map_82b45bbe2690e9af808cc99d9dbc2aeb);
         
     
-            var icon_c7a651e27b96f0543a409deb22dcbcc8 = L.AwesomeMarkers.icon(
+            var icon_9b7bffa25d1293dd3dd899f591dadb27 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -225,34 +230,34 @@
             );
         
     
-        var popup_91cfa1cb8ad7c0c3fc15cf518d7e2a75 = L.popup({
+        var popup_3b6293d00e1dd478fc97b93b35893cf2 = L.popup({
   "maxWidth": "100%",
 });
 
         
             
-                var html_e0c11b586c703e8ef5157a96fe448846 = $(`<div id="html_e0c11b586c703e8ef5157a96fe448846" style="width: 100.0%; height: 100.0%;"><a href="courses/La Crosse Omnium_2025/La Crosse Omnium_crit_2025_details.html" target="_blank">La Crosse Omnium 2025</a></div>`)[0];
-                popup_91cfa1cb8ad7c0c3fc15cf518d7e2a75.setContent(html_e0c11b586c703e8ef5157a96fe448846);
+                var html_de41e850af4a7d1d28a89ba0bdfe66c2 = $(`<div id="html_de41e850af4a7d1d28a89ba0bdfe66c2" style="width: 100.0%; height: 100.0%;">La Crosse Omnium 2025</div>`)[0];
+                popup_3b6293d00e1dd478fc97b93b35893cf2.setContent(html_de41e850af4a7d1d28a89ba0bdfe66c2);
             
         
 
-        marker_6c43c4bb437f5a8b6ccf28ec05a9516a.bindPopup(popup_91cfa1cb8ad7c0c3fc15cf518d7e2a75)
+        marker_39ec2e0391bde1c0e4f97a460b4ce1dd.bindPopup(popup_3b6293d00e1dd478fc97b93b35893cf2)
         ;
 
         
     
     
-                marker_6c43c4bb437f5a8b6ccf28ec05a9516a.setIcon(icon_c7a651e27b96f0543a409deb22dcbcc8);
+                marker_39ec2e0391bde1c0e4f97a460b4ce1dd.setIcon(icon_9b7bffa25d1293dd3dd899f591dadb27);
             
     
-            var marker_b6371729eeef6d22ec11b9c123e03cf5 = L.marker(
+            var marker_dcbdbd4d236d5908a378265231be1638 = L.marker(
                 [32.908742, -117.174781],
                 {
 }
-            ).addTo(map_7abf282bb7870ad86139233c1ca8b6b7);
+            ).addTo(map_82b45bbe2690e9af808cc99d9dbc2aeb);
         
     
-            var icon_14b52446a8c77443172123dcfe670a37 = L.AwesomeMarkers.icon(
+            var icon_2bca5826edb3a280263e2d4b953b560c = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -263,34 +268,34 @@
             );
         
     
-        var popup_17369cdc6029f96bc4b623d025df74ab = L.popup({
+        var popup_d9dc9d2f2eb86d1a5e32c3cb82ce368b = L.popup({
   "maxWidth": "100%",
 });
 
         
             
-                var html_9531fa36dc6b97337d83e1d1760f5581 = $(`<div id="html_9531fa36dc6b97337d83e1d1760f5581" style="width: 100.0%; height: 100.0%;"><a href="courses/Triton_2025/Triton_crit_2025_details.html" target="_blank">Triton 2025</a></div>`)[0];
-                popup_17369cdc6029f96bc4b623d025df74ab.setContent(html_9531fa36dc6b97337d83e1d1760f5581);
+                var html_6181892ba960f081851d93c3f4c5f9ff = $(`<div id="html_6181892ba960f081851d93c3f4c5f9ff" style="width: 100.0%; height: 100.0%;">Triton 2025</div>`)[0];
+                popup_d9dc9d2f2eb86d1a5e32c3cb82ce368b.setContent(html_6181892ba960f081851d93c3f4c5f9ff);
             
         
 
-        marker_b6371729eeef6d22ec11b9c123e03cf5.bindPopup(popup_17369cdc6029f96bc4b623d025df74ab)
+        marker_dcbdbd4d236d5908a378265231be1638.bindPopup(popup_d9dc9d2f2eb86d1a5e32c3cb82ce368b)
         ;
 
         
     
     
-                marker_b6371729eeef6d22ec11b9c123e03cf5.setIcon(icon_14b52446a8c77443172123dcfe670a37);
+                marker_dcbdbd4d236d5908a378265231be1638.setIcon(icon_2bca5826edb3a280263e2d4b953b560c);
             
     
-            var marker_49c0c1f2747771b9bccb9a3a87718494 = L.marker(
+            var marker_b3f373738623e4ca4666caae2d9b1200 = L.marker(
                 [43.317555, -87.952396],
                 {
 }
-            ).addTo(map_7abf282bb7870ad86139233c1ca8b6b7);
+            ).addTo(map_82b45bbe2690e9af808cc99d9dbc2aeb);
         
     
-            var icon_8e05c7bcb2847a48b104af9cc1566907 = L.AwesomeMarkers.icon(
+            var icon_403df7e7a812a8c8275fa1e91f51fdfa = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -301,34 +306,34 @@
             );
         
     
-        var popup_224e6ef1c53c17bd6746d63ce03d4b45 = L.popup({
+        var popup_7be61296540c4b548cf755a69d76e626 = L.popup({
   "maxWidth": "100%",
 });
 
         
             
-                var html_1aefa6343ba5e12c61fc6dfb1ec3ceda = $(`<div id="html_1aefa6343ba5e12c61fc6dfb1ec3ceda" style="width: 100.0%; height: 100.0%;"><a href="courses/ToAD Grafton_2024/ToAD Grafton_crit_2024_details.html" target="_blank">ToAD Grafton 2024</a></div>`)[0];
-                popup_224e6ef1c53c17bd6746d63ce03d4b45.setContent(html_1aefa6343ba5e12c61fc6dfb1ec3ceda);
+                var html_efb760dbef08ffc94631281d6e6c8ed1 = $(`<div id="html_efb760dbef08ffc94631281d6e6c8ed1" style="width: 100.0%; height: 100.0%;">ToAD Grafton 2024</div>`)[0];
+                popup_7be61296540c4b548cf755a69d76e626.setContent(html_efb760dbef08ffc94631281d6e6c8ed1);
             
         
 
-        marker_49c0c1f2747771b9bccb9a3a87718494.bindPopup(popup_224e6ef1c53c17bd6746d63ce03d4b45)
+        marker_b3f373738623e4ca4666caae2d9b1200.bindPopup(popup_7be61296540c4b548cf755a69d76e626)
         ;
 
         
     
     
-                marker_49c0c1f2747771b9bccb9a3a87718494.setIcon(icon_8e05c7bcb2847a48b104af9cc1566907);
+                marker_b3f373738623e4ca4666caae2d9b1200.setIcon(icon_403df7e7a812a8c8275fa1e91f51fdfa);
             
     
-            var marker_17f388ce398ba714d24583c17647e472 = L.marker(
+            var marker_b23a58fe7f34a5ba27794c55de004aaa = L.marker(
                 [34.055528, -117.180774],
                 {
 }
-            ).addTo(map_7abf282bb7870ad86139233c1ca8b6b7);
+            ).addTo(map_82b45bbe2690e9af808cc99d9dbc2aeb);
         
     
-            var icon_553fa4bcfdae07c1668b40c3ce1f5991 = L.AwesomeMarkers.icon(
+            var icon_1994481e56aad183a0ac8da35279a555 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -339,31 +344,24 @@
             );
         
     
-        var popup_0159020a531a66b968159922755d21e0 = L.popup({
+        var popup_0d4edb853fed1ad209645c79c06f7bf4 = L.popup({
   "maxWidth": "100%",
 });
 
         
             
-                var html_8eb8db630b95541e02b79753049db867 = $(`<div id="html_8eb8db630b95541e02b79753049db867" style="width: 100.0%; height: 100.0%;"><a href="courses/Redlands_2025/Redlands_crit_2025_details.html" target="_blank">Redlands 2025</a></div>`)[0];
-                popup_0159020a531a66b968159922755d21e0.setContent(html_8eb8db630b95541e02b79753049db867);
+                var html_c9a20ad7e5389d05be61f4da8847e711 = $(`<div id="html_c9a20ad7e5389d05be61f4da8847e711" style="width: 100.0%; height: 100.0%;">Redlands 2025</div>`)[0];
+                popup_0d4edb853fed1ad209645c79c06f7bf4.setContent(html_c9a20ad7e5389d05be61f4da8847e711);
             
         
 
-        marker_17f388ce398ba714d24583c17647e472.bindPopup(popup_0159020a531a66b968159922755d21e0)
+        marker_b23a58fe7f34a5ba27794c55de004aaa.bindPopup(popup_0d4edb853fed1ad209645c79c06f7bf4)
         ;
 
         
     
     
-                marker_17f388ce398ba714d24583c17647e472.setIcon(icon_553fa4bcfdae07c1668b40c3ce1f5991);
+                marker_b23a58fe7f34a5ba27794c55de004aaa.setIcon(icon_1994481e56aad183a0ac8da35279a555);
             
 </script>
-    </div>
-  </main>
-
-  <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
-    © 2025 Julia Hazenberg. All rights reserved. For informational purposes only.
-  </footer>
-</body>
 </html>
