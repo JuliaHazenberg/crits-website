@@ -243,7 +243,58 @@ for loc in crit_locations:
         icon=folium.Icon(color="blue", icon="bicycle", prefix="fa")
     ).add_to(m)
 
-# Save just the map HTML (no extra wrapping)
-m.save(EVENT_MAP_HTML)
+# Render the full folium HTML as a string
+full_map_html = m.get_root().render()
 
-print("✅ event_map.html generated with just the map")
+# Use BeautifulSoup to extract the map <div> and related styles/scripts
+from bs4 import BeautifulSoup
+
+soup = BeautifulSoup(full_map_html, "html.parser")
+
+# Folium map container div (usually with class 'folium-map')
+map_div = soup.find("div", class_="folium-map")
+
+# Folium includes <style> and <script> in <head> and <body>, we want to keep them
+# Extract folium's <style> and <script> tags (if any)
+head_styles = soup.find_all("style")
+body_scripts = soup.find_all("script")
+
+# Compose your own HTML wrapping the extracted map div with your CSS linked
+event_map_page = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Event Map</title>
+  <link rel="stylesheet" href="style.css" />
+  {"".join(str(s) for s in head_styles)}
+</head>
+<body>
+  <header>
+    <h1>Event Map</h1>
+    <nav>
+      <a href="index.html">Courses</a>
+      <a href="calendar.html">Event Calendar</a>
+      <a href="event_map.html">Event Map</a>
+    </nav>
+  </header>
+  
+  <main>
+    <div class="map-wrapper">
+      {str(map_div)}
+    </div>
+  </main>
+
+  {"".join(str(s) for s in body_scripts)}
+
+  <footer style="text-align:center; padding:1em; font-size:0.8em; color:gray;">
+    © 2025 Julia Hazenberg. All rights reserved. For informational purposes only.
+  </footer>
+</body>
+</html>
+"""
+
+with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
+    f.write(event_map_page)
+
+print("✅ event_map.html generated with wrapper and CSS")
