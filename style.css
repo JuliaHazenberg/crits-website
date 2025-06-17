@@ -216,5 +216,5 @@ footer {
 }
 
 /* Give the map a real height and stop it escaping its box */
-.map-wrapper            { width:90%; margin:0 auto; height:70vh; }   /* you can tweak 70vh */
+.map-wrapper            { width:100%; margin:0 auto; height:60vh; max-height: 600px }   /* you can tweak 70vh */
 .map-wrapper .folium-map{ height:100% !important; }                 /* override inline 100% */
