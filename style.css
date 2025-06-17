@@ -142,8 +142,8 @@ footer {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1.5rem;
     padding: 2rem;
-    width = 100%;
-    max-width = 1200px;
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
