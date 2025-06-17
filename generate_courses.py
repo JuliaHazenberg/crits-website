@@ -191,7 +191,7 @@ if os.path.exists(EVENTS_JSON):
             )
         else:
             month_cards.append(
-                f'<div class="month-card{highlight}"><h2>{m}</h2><p>No events listed.</p></div>'
+                f'<div class="month-card{highlight}"><h2>{m}</h2><p> </p></div>'
             )
 
 
