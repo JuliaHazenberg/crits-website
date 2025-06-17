@@ -264,6 +264,8 @@ style_html = "\n".join(str(tag) for tag in styles)
 embedded_map = f"{style_html}\n{map_html}\n{script_html}"
 
 # Write full event_map.html with consistent style
+# Replace this part in your write for event_map.html
+
 with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
     f.write(f"""<!DOCTYPE html>
 <html lang="en">
@@ -284,7 +286,9 @@ with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
   </header>
 
   <main style="width: 90%; margin: 0 auto; padding-top: 1rem;">
-    {embedded_map}
+    <div class="map-wrapper">
+      {embedded_map}
+    </div>
   </main>
 
   <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
@@ -292,6 +296,7 @@ with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
   </footer>
 </body>
 </html>""")
+
 
 # Optional cleanup
 os.remove(temp_map_path)
