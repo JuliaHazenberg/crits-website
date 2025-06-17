@@ -232,41 +232,55 @@ if os.path.exists(EVENTS_JSON):
     }}
 
     main {{
-      max-width: 900px;
+      max-width: 1200px;
       margin: 2rem auto;
       padding: 0 1rem;
     }}
 
-    section {{
+    .calendar-grid {{
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }}
+
+    .month-card {{
       background: #fff;
       border-radius: 12px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      margin-bottom: 2rem;
-      padding: 1.5rem 2rem;
+      padding: 1.2rem 1rem;
+      display: flex;
+      flex-direction: column;
     }}
 
-    section h2 {{
-      font-size: 1.8rem;
+    .month-card h2 {{
+      font-size: 1.5rem;
       color: #004c3f;
-      border-bottom: 2px solid #eee;
-      padding-bottom: 0.5rem;
       margin-top: 0;
+      margin-bottom: 0.5rem;
+      text-align: center;
     }}
 
     ul {{
       list-style-type: disc;
-      margin: 1rem 0 0 1.5rem;
-      padding: 0;
+      padding-left: 1.2rem;
+      margin: 0;
     }}
 
     li {{
-      padding: 0.3rem 0;
-      font-size: 1.1rem;
+      font-size: 1rem;
+      padding: 0.2rem 0;
     }}
 
     li:hover {{
       color: #007e66;
       cursor: default;
+    }}
+
+    .no-events {{
+      color: #999;
+      font-style: italic;
+      font-size: 0.95rem;
+      text-align: center;
     }}
 
     footer {{
@@ -289,7 +303,18 @@ if os.path.exists(EVENTS_JSON):
   </header>
 
   <main>
-    {sections}
+    <div class="calendar-grid">
+      {''.join(f'''
+        <div class="month-card">
+          <h2>{month}</h2>
+          {(
+            f"<ul>{''.join(f'<li>{event}</li>' for event in sorted(events_by_month[month]))}</ul>"
+            if month in events_by_month
+            else '<p class="no-events">No events listed.</p>'
+          )}
+        </div>
+      ''' for month in month_order)}
+    </div>
   </main>
 
   <footer>
