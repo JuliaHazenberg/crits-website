@@ -26,23 +26,23 @@ header {
 
 /* NAVIGATION BUTTONS */
 nav {
-    text-align: center;
+    display: flex;           /* use flexbox */
+    flex-wrap: wrap;         /* allow buttons to wrap onto next line */
+    justify-content: center; /* center buttons horizontally */
+    gap: 12px;               /* consistent spacing between buttons */
     margin-bottom: 1rem;
+    padding: 0 1rem;         /* small horizontal padding so buttons don't touch edges */
 }
 
 nav a {
-    display: inline-block;
-    margin: 0 12px;
-    padding: 10px 24px;
-    background-color: #007a5e;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
+    margin: 0;               /* remove horizontal margin */
+    padding: 10px 20px;
+    min-width: 120px;        /* ensure buttons don't get too small */
+    flex-grow: 1;            /* allow buttons to grow equally if space allows */
+    max-width: 220px;        /* optional: limit max width */
+    text-align: center;
     border-radius: 12px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    user-select: none;
+    box-sizing: border-box;
 }
 
 nav a:hover,
