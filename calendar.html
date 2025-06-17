@@ -22,7 +22,7 @@
     <nav><a href="index.html">Courses</a> | <a href="calendar.html">Event Calendar</a></nav>
   </header>
 
-  <div class="filter-bar"> <!-- *** UPDATED *** -->
+  <div class="filter-bar">
     <label for="calendarStateFilter">Filter by State:</label>
     <select id="calendarStateFilter">
       <option value="all">All States</option>
@@ -32,26 +32,22 @@
 
   <main><div class="calendar-grid"><div class="month-card"><h2>January</h2><p> </p></div><div class="month-card"><h2>February</h2><p> </p></div><div class="month-card"><h2>March</h2><p> </p></div><div class="month-card"><h2>April</h2><ul><li data-state="California">Redlands Criterium</li></ul></div><div class="month-card"><h2>May</h2><ul><li data-state="Wisconsin">Concordia Criterium</li><li data-state="Wisconsin">La Crosse Omnium</li><li data-state="California">Triton Criterium</li></ul></div><div class="month-card current-month"><h2>June</h2><ul><li data-state="Illinois">Cobb Park Criterium</li><li data-state="Wisconsin">ToAD Grafton</li><li data-state="Wisconsin">ToAD Janesville</li></ul></div><div class="month-card"><h2>July</h2><p> </p></div><div class="month-card"><h2>August</h2><p> </p></div><div class="month-card"><h2>September</h2><p> </p></div><div class="month-card"><h2>October</h2><p> </p></div><div class="month-card"><h2>November</h2><p> </p></div><div class="month-card"><h2>December</h2><p> </p></div></div></main>
 
-  <script>  <!-- *** UPDATED *** -->
+  <script>
     const calendarSelect = document.getElementById('calendarStateFilter');
     const monthCards = document.querySelectorAll('.month-card');
 
     calendarSelect.addEventListener('change', () => {
       const selected = calendarSelect.value;
       monthCards.forEach(monthCard => {
-        // Get all <li> inside this monthCard
         const items = monthCard.querySelectorAll('li');
-        let anyVisible = false;
         items.forEach(item => {
           if (selected === 'all' || item.dataset.state === selected) {
             item.style.display = '';
-            anyVisible = true;
           } else {
             item.style.display = 'none';
           }
         });
-        // If no items visible, hide the entire monthCard
-        monthCard.style.display = anyVisible ? '' : 'none';
+        // Note: do NOT hide month card itself, so all months remain visible
       });
     });
   </script>
