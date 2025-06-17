@@ -249,13 +249,19 @@ m.save(temp_map_path)
 with open(temp_map_path, "r", encoding="utf-8") as mf:
     folium_map_html = mf.read()
 
-# Extract only the body content from Folium’s output
-body_start = folium_map_html.find("<body>")
-body_end = folium_map_html.find("</body>")
-if body_start != -1 and body_end != -1:
-    embedded_map = folium_map_html[body_start + len("<body>"):body_end].strip()
-else:
-    embedded_map = folium_map_html  # fallback: embed full thing
+soup = BeautifulSoup(folium_map_html, "html.parser")
+
+# Get folium map <div> and all <script> + <style> tags it needs
+map_div = soup.find("div", {"class": "folium-map"})
+scripts = soup.find_all("script")
+styles = soup.find_all("style")
+
+# Convert everything to string
+map_html = str(map_div)
+script_html = "\n".join(str(tag) for tag in scripts)
+style_html = "\n".join(str(tag) for tag in styles)
+
+embedded_map = f"{style_html}\n{map_html}\n{script_html}"
 
 # Write full event_map.html with consistent style
 with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
@@ -291,7 +297,3 @@ with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
 os.remove(temp_map_path)
 
 print("✅ event_map.html generated")
-
-print(f"📍 index.html will be saved to: {INDEX_HTML}")
-print(f"📍 calendar.html will be saved to: {CALENDAR_HTML}")
-print(f"📍 event_map.html will be saved to: {EVENT_MAP_HTML}")
