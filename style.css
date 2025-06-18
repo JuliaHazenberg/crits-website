@@ -7,7 +7,6 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
     background-color: #f5f5f5;
@@ -148,7 +147,6 @@ footer {
     box-sizing: border-box;
 }
 
-
 /* CALENDAR PAGE – INDIVIDUAL MONTH CARD */
 .month-card {
     background: white;
@@ -177,10 +175,11 @@ footer {
 }
 
 .current-month {
-  border: 2px solid #007a5e;
-  background-color: #e6f7f2;
+    border: 2px solid #007a5e;
+    background-color: #e6f7f2;
 }
 
+/* FILTER BAR */
 .filter-bar {
     display: flex;
     justify-content: center;
@@ -189,7 +188,7 @@ footer {
     font-size: 1.1rem;
     font-weight: 600;
     color: #004c3f;
-    margin: 1.2rem auto 1rem auto; /* spacing around the bar */
+    margin: 1.2rem auto 1rem auto;
 }
 
 .filter-bar label {
@@ -202,7 +201,7 @@ footer {
     font-size: 1rem;
     border: 2px solid #004c3f;
     border-radius: 6px;
-    background: #f5f5f5; /* match the page bg */
+    background: #f5f5f5;
     color: #004c3f;
     cursor: pointer;
     transition: box-shadow 0.3s ease;
@@ -215,15 +214,25 @@ footer {
     box-shadow: 0 0 6px rgba(0, 76, 63, 0.2);
 }
 
+/* EVENT MAP PAGE – NICER CONTAINER FOR MAP */
 .map-wrapper {
-    flex: 1 1 auto;   /* fill the vertical space */
-    position: relative;
     width: 100%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    aspect-ratio: 16 / 9;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    background-color: white;
 }
 
+/* Embedded Folium map inside the nicer container */
 .folium-map {
     position: absolute;
-    top: 0; bottom: 0; left: 0; right: 0;
+    top: 0; left: 0; bottom: 0; right: 0;
     width: 100%;
     height: 100%;
+    border: none;
+    display: block;
 }
