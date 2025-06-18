@@ -1,10 +1,5 @@
 [
   {
-    "date": "May",
-    "critname": "La Crosse Omnium",
-    "state": "Wisconsin"
-  },
-  {
     "date": "June",
     "critname": "Cobb Park Criterium",
     "state": "Illinois"
@@ -15,9 +10,29 @@
     "state": "Wisconsin"
   },
   {
+    "date": "May",
+    "critname": "La Crosse Omnium",
+    "state": "Wisconsin"
+  },
+  {
     "date": "April",
     "critname": "Redlands Criterium",
     "state": "California"
+  },
+  {
+    "date": "May",
+    "critname": "ToAD Bay View",
+    "state": "Wisconsin"
+  },
+  {
+    "date": "May",
+    "critname": "ToAD Cedarburg",
+    "state": "Wisconsin"
+  },
+  {
+    "date": "May",
+    "critname": "ToAD De Pere",
+    "state": "Wisconsin"
   },
   {
     "date": "June",
@@ -28,30 +43,15 @@
     "date": "June",
     "critname": "ToAD Janesville",
     "state": "Wisconsin"
-  }, 
+  },
+  {
+    "date": "May",
+    "critname": "ToAD Shorewood",
+    "state": "Wisconsin"
+  },
   {
     "date": "May",
     "critname": "Triton Criterium",
     "state": "California"
-  },
-    {
-    "date": "May",
-    "critname": "ToAD Bay View",
-    "state": "Wisconsin"
-  },
-  {
-    "date": "May",
-    "critname": "ToAD Cedarburg",
-    "state": "Wisconsin"
-  },
-    {
-    "date": "May",
-    "critname": "ToAD De Pere",
-    "state": "Wisconsin"
-  },
-    {
-    "date": "May",
-    "critname": "ToAD Shorewood",
-    "state": "Wisconsin"
   }
 ]
