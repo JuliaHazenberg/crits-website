@@ -33,5 +33,25 @@
     "date": "May",
     "critname": "Triton Criterium",
     "state": "California"
+  },
+    {
+    "date": "May",
+    "critname": "ToAD Bay View",
+    "state": "Wisconsin"
+  },
+  {
+    "date": "May",
+    "critname": "ToAD Cedarburg",
+    "state": "Wisconsin"
+  },
+    {
+    "date": "May",
+    "critname": "ToAD De Pere",
+    "state": "Wisconsin"
+  },
+    {
+    "date": "May",
+    "critname": "ToAD Shorewood",
+    "state": "Wisconsin"
   }
 ]
