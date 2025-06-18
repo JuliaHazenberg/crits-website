@@ -233,11 +233,60 @@ print("✅ calendar.html generated")
 
 # --- EVENT_MAP.HTML ---
 
-# Create a simple empty map centered on USA without any markers
+# 1. build the map and add one marker per crit
 m = folium.Map(location=[39.5, -98.35], zoom_start=4, tiles="OpenStreetMap")
 
-# Save the map HTML directly to event_map.html
-m.save(EVENT_MAP_HTML)
+for loc in crit_locations:            # <-- crit_locations was already collected earlier
+    folium.Marker(
+        location=[loc["lat"], loc["lon"]],
+        tooltip=f"{loc['name']} {loc['year']}",
+        popup=(
+            f'<a href="courses/{loc["folder"]}/'
+            f'{loc["raw"]}_crit_{loc["year"]}_details.html" target="_top">'
+            f'Open course page</a>'
+        ),
+        icon=folium.Icon(color="green", icon="bicycle", prefix="fa")
+    ).add_to(m)
 
-print("✅ event_map.html generated with simple empty map")
+# 2. save the raw map to its own file
+EVENT_MAP_IFRAME = os.path.join(BASE_DIR, "event_map_map.html")
+m.save(EVENT_MAP_IFRAME)
 
+# 3. create a wrapper page with your normal header/nav/footer
+with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
+    f.write(f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Event Map</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Event Map</h1>
+    <nav>
+      <a href="index.html">Courses</a>
+      <a href="calendar.html">Event Calendar</a>
+      <a href="event_map.html">Event Map</a>
+    </nav>
+  </header>
+
+  <!-- optional: reuse the same filter‑bar pattern -->
+  <!--
+  <div class="filter-bar">
+    <label>(future filter…)</label>
+  </div>
+  -->
+
+  <main class="map-wrapper">
+    <iframe src="event_map_map.html" class="folium-map" loading="lazy"></iframe>
+  </main>
+
+  <footer style="text-align: center; padding: 1em; font-size: 0.8em; color: gray;">
+    © 2025 Julia Hazenberg. All rights reserved. For informational purposes only.
+  </footer>
+</body>
+</html>""")
+
+print("✅ event_map.html generated (wrapper) + event_map_map.html (actual map)")
