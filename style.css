@@ -217,9 +217,9 @@ footer {
 /* EVENT MAP PAGE – NICER CONTAINER FOR MAP */
 .map-wrapper {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 2rem auto;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 18 / 9;
     position: relative;
     border-radius: 16px;
     overflow: hidden;
