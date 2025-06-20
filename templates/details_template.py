@@ -112,7 +112,7 @@ def process_course(gpx_path, output_dir, critname, year):
         segment = folium.PolyLine([coords[i], coords[i + 1]], color=color, weight=8, opacity=0.9,
                                   tooltip=f"Gradient: {gradient:.1f}%").add_to(m)
         
-        # Add arrow pointing in direction of crit
+        # Add arrow pointing in direction of crit course
         PolyLineTextPath(
             segment,
             '➤',
