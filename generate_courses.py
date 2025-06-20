@@ -233,7 +233,7 @@ print("✅ calendar.html generated")
 
 # --- EVENT_MAP.HTML ---
 
-# 1. build the map and add one marker per crit
+# Build the map and add one marker per crit
 m = folium.Map(location=[39.5, -98.35], zoom_start=4, tiles="OpenStreetMap")
 
 for loc in crit_locations:            # <-- crit_locations was already collected earlier
@@ -248,11 +248,11 @@ for loc in crit_locations:            # <-- crit_locations was already collected
         icon=folium.Icon(color="green", icon="bicycle", prefix="fa")
     ).add_to(m)
 
-# 2. save the raw map to its own file
+# Save the raw map to its own file
 EVENT_MAP_IFRAME = os.path.join(BASE_DIR, "event_map_map.html")
 m.save(EVENT_MAP_IFRAME)
 
-# 3. create a wrapper page with your normal header/nav/footer
+# Create a wrapper page with normal header/nav/footer
 with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
     f.write(f"""<!DOCTYPE html>
 <html lang="en">
@@ -271,13 +271,6 @@ with open(EVENT_MAP_HTML, "w", encoding="utf-8") as f:
       <a href="event_map.html">Event Map</a>
     </nav>
   </header>
-
-  <!-- optional: reuse the same filter‑bar pattern -->
-  <!--
-  <div class="filter-bar">
-    <label>(future filter…)</label>
-  </div>
-  -->
 
   <main class="map-wrapper">
     <iframe src="event_map_map.html" class="folium-map" loading="lazy"></iframe>
