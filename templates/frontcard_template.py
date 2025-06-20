@@ -41,7 +41,7 @@ def process_frontcard(gpx_path, output_dir, critname, year):
     lap_indices = [0]
     for i, (lat, lon, _) in enumerate(points[1:], start=1):
         if geodesic(start_point, (lat, lon)).meters < lap_threshold:
-            if i - lap_indices[-1] > 20:  # avoid duplicates
+            if i - lap_indices[-1] > 20:  # avoid duplicate laps
                 lap_indices.append(i)
 
     if len(lap_indices) < 2:
@@ -76,7 +76,7 @@ def process_frontcard(gpx_path, output_dir, critname, year):
 
     folium.PolyLine(lap_coords, color="darkgreen", weight=6, opacity=0.9).add_to(m)
 
-    # Disable all map interactivity using JS
+    # Disable all map interactivity using JS (annoying when scrolling)
     m.get_root().html.add_child(folium.Element("""
     <script>
         var map = document.getElementsByClassName('folium-map')[0]._leaflet_map;
